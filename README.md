@@ -10,7 +10,7 @@ The project is built using Python and Flask for the backend, along with HTML, CS
 
 ## 🌐 Live Demo
 
-🚀 **Live Website:** [Add Render Deployment URL Here](#)
+🚀 **Live Website:** [https://sandhu-ai-bot.onrender.com](#)
 
 > Live demo link will be updated after deployment on Render.
 
@@ -131,7 +131,7 @@ The live deployment URL will be added here after successful deployment.
 BCA Student | Frontend Web Developer | Learning Python | Aspiring Software Engineer
 
 - 🌐 GitHub: [ANMOLSANDHU0065](https://github.com/ANMOLSANDHU0065)
-- 💼 LinkedIn: [Connect with me](YOUR-LINKEDIN-PROFILE-URL)
+- 💼 LinkedIn: [Connect with me](https://www.linkedin.com/in/anmol-sandhu-ch01as07/)
 - 🚀 Live Demo: [SANDHU AI BOT](#)
 
 ## 🎯 Project Purpose

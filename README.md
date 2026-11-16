@@ -69,7 +69,7 @@ BCA Student | Frontend Web Developer | Learning Python | Aspiring Software Engin
 
 - 🌐 GitHub: [ANMOLSANDHU0065](https://github.com/ANMOLSANDHU0065)
 - 💼 LinkedIn: [Connect with me](https://www.linkedin.com/in/anmol-sandhu-ch01as07/)
-- 🚀 Live Demo: [[SANDHU AI BOT](https://sandhu-ai-bot.onrender.com)]
+- 🚀 Live Demo: [SANDHU AI BOT](https://sandhu-ai-bot.onrender.com)
 
 ## 🎯 Project Purpose
 

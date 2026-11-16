@@ -10,7 +10,7 @@ The project is built using Python and Flask for the backend, along with HTML, CS
 
 ## 🌐 Live Demo
 
-- 🚀 Live Demo: [[SANDHU AI BOT](https://sandhu-ai-bot.onrender.com)](#)
+- 🚀 Live Demo: [SANDHU AI BOT(https://sandhu-ai-bot.onrender.com)](#)
 
 > Live demo link will be updated after deployment on Render.
 

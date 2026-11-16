@@ -54,69 +54,6 @@ Available demo payment options:
 
 **Note:** This is only a demonstration interface. It does not process real payments or connect to any payment gateway.
 
-## 📂 Project Structure
-
-```text
-SANDHU-AI-BOT/
-│
-├── static/
-│
-├── templates/
-│   └── index.html
-│
-├── run.py
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
-
-*The structure above shows the main project files; additional files may be present.*
-
-## ⚙️ Run Locally
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/ANMOLSANDHU0065/SANDHU-AI-BOT.git
-```
-
-### 2. Open Project Folder
-
-```bash
-cd SANDHU-AI-BOT
-```
-
-### 3. Create Virtual Environment
-
-```bash
-python -m venv venv
-```
-
-### 4. Activate Virtual Environment
-
-**Windows:**
-
-```bash
-venv\Scripts\activate
-```
-
-### 5. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 6. Run the Application
-
-```bash
-python run.py
-```
-
-Open your browser:
-
-```text
-http://127.0.0.1:5000
-```
 
 ## 🚀 Deployment
 
@@ -132,7 +69,7 @@ BCA Student | Frontend Web Developer | Learning Python | Aspiring Software Engin
 
 - 🌐 GitHub: [ANMOLSANDHU0065](https://github.com/ANMOLSANDHU0065)
 - 💼 LinkedIn: [Connect with me](https://www.linkedin.com/in/anmol-sandhu-ch01as07/)
-- 🚀 Live Demo: [[SANDHU AI BOT](https://sandhu-ai-bot.onrender.com)](#)
+- 🚀 Live Demo: [[SANDHU AI BOT](https://sandhu-ai-bot.onrender.com)]
 
 ## 🎯 Project Purpose
 

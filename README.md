@@ -1,83 +1,153 @@
-# SANDHU AI BOT
+# 🤖 SANDHU AI BOT
 
-A beginner-friendly NLP chatbot web application built with Python, Flask, scikit-learn (TF-IDF), and SQLite.
+### Your Smart AI-Powered Chat Assistant
 
-## Features
+SANDHU AI BOT is a modern AI chatbot project designed with a clean, minimal, and user-friendly interface. It provides an interactive chat experience with useful features, a responsive design, and a demo payment interface.
 
-- Chat interface built with HTML, CSS, and JavaScript
-- NLP-based FAQ matching using TF-IDF and cosine similarity
-- Basic follow-up context handling
-- SQLite chat history, separated by browser session
-- Clear chat feature
-- Responsive layout
-- Simple tests with pytest
+The project is built using Python and Flask for the backend, along with HTML, CSS, and JavaScript for the frontend.
 
-## Important project note
+---
 
-This starter project uses a lightweight retrieval-based NLP engine. It is an AI/NLP learning chatbot, but it is **not** a generative LLM like ChatGPT. The Hugging Face / Transformers integration can be added as a later enhancement with a suitable model and API configuration.
+## 🌐 Live Demo
 
-## Requirements
+🚀 **Live Website:** [Add Render Deployment URL Here](#)
 
-- Python 3.10 or newer
-- VS Code (recommended)
+> Live demo link will be updated after deployment on Render.
 
-## Setup on Windows PowerShell
+## ✨ Features
 
-Open this folder in VS Code and run:
+- 💬 Interactive AI Chat Interface
+- 🎨 Modern White & Navy Blue Theme
+- 🌙 Dark Mode Support
+- 📝 Chat History Management
+- 🔄 New Chat & Regenerate Response
+- 🎤 Voice Input Support
+- 📎 Attachment Preview
+- 📤 Export Chat History
+- ⚙️ Settings Section
+- 🔍 Discover Section
+- 💳 Demo Payment Interface
+- 📱 Responsive User Interface
 
-```powershell
-py -m venv venv
-.\venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-python run.py
-```
+## 🛠️ Technologies Used
 
-If PowerShell blocks activation, run this in the current terminal:
+| Technology | Purpose |
+|---|---|
+| Python | Backend Programming |
+| Flask | Web Framework |
+| HTML5 | Website Structure |
+| CSS3 | Styling & Design |
+| JavaScript | Frontend Interactions |
+| Gunicorn | Production WSGI Server |
+| Git & GitHub | Version Control |
 
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\venv\Scripts\Activate.ps1
-```
+## 💳 Demo Payment System
 
-Then open http://127.0.0.1:5000 in your browser.
+SANDHU AI BOT includes a dummy payment interface for demonstration purposes.
 
-## Run tests
+Available demo payment options:
 
-```powershell
-pytest
-```
+- UPI
+- QR Code Placeholder
+- Debit / Credit Card
+- Cash
 
-## Project structure
+**Note:** This is only a demonstration interface. It does not process real payments or connect to any payment gateway.
+
+## 📂 Project Structure
 
 ```text
 SANDHU-AI-BOT/
-├── backend/
-│   ├── routes/
-│   ├── app.py
-│   ├── chatbot.py
-│   ├── config.py
-│   ├── database.py
-│   └── nlp_engine.py
-├── frontend/
-│   ├── templates/
-│   └── static/
-├── database/          # chatbot.db is created automatically
-├── models/            # place optional model assets here
-├── tests/
-├── .env.example
-├── .gitignore
+│
+├── static/
+│
+├── templates/
+│   └── index.html
+│
+├── run.py
 ├── requirements.txt
-└── run.py
+├── .gitignore
+└── README.md
 ```
 
-## Customizing answers
+*The structure above shows the main project files; additional files may be present.*
 
-Edit the `FAQS` list in `backend/nlp_engine.py` to add your own sample questions and answers. Keep each question group short and add several natural ways a user might ask the same thing.
+## ⚙️ Run Locally
 
-## Before publishing
+### 1. Clone the Repository
 
-- Change the `SECRET_KEY` in `.env` to a secure random value.
-- Do not upload `.env` or database files to GitHub.
-- Add your own screenshots to the README.
-- Test the app and explain honestly that the current version uses TF-IDF FAQ retrieval.
+```bash
+git clone https://github.com/ANMOLSANDHU0065/SANDHU-AI-BOT.git
+```
+
+### 2. Open Project Folder
+
+```bash
+cd SANDHU-AI-BOT
+```
+
+### 3. Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### 4. Activate Virtual Environment
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+### 5. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 6. Run the Application
+
+```bash
+python run.py
+```
+
+Open your browser:
+
+```text
+http://127.0.0.1:5000
+```
+
+## 🚀 Deployment
+
+This project is intended to be deployed using **Render**.
+
+The live deployment URL will be added here after successful deployment.
+
+## 👨‍💻 Developer
+
+**Anmol Singh Sandhu**
+
+BCA Student | Frontend Web Developer | Learning Python | Aspiring Software Engineer
+
+- 🌐 GitHub: [ANMOLSANDHU0065](https://github.com/ANMOLSANDHU0065)
+- 💼 LinkedIn: [Connect with me](YOUR-LINKEDIN-PROFILE-URL)
+- 🚀 Live Demo: [SANDHU AI BOT](#)
+
+## 🎯 Project Purpose
+
+This project was developed to explore web application development, Python backend integration, frontend design, and interactive chatbot experiences while improving practical development skills.
+
+## 📄 License
+
+This project is created for learning and educational purposes.
+
+---
+
+<p align="center">
+  <b>Built with ❤️ by Anmol Singh Sandhu</b>
+</p>
+
+<p align="center">
+  ⭐ If you like this project, consider giving it a star!
+</p>

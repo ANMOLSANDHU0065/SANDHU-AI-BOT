@@ -1,0 +1,2181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1f3a">
+<title>SANDHU AI BOT — Intelligent Workspace</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#f5f8fc;
+ --surface:#ffffff;
+ --surface-2:#edf2f8;
+ --surface-3:#dfe8f3;
+ --ink:#172b45;
+ --muted:#74849a;
+ --line:#dce5ef;
+ --navy:#0b1f3a;
+ --navy-2:#15385f;
+ --accent:#315f91;
+ --accent-soft:#e8f0f9;
+ --user:#e8f0f9;
+ --shadow:0 16px 44px rgba(11,31,58,.08);
+ --radius:20px;
+ color-scheme:light;
+}
+
+body.dark{
+ --bg:#101a29;
+ --surface:#18263a;
+ --surface-2:#22334b;
+ --surface-3:#2d405a;
+ --ink:#edf4fc;
+ --muted:#a1b2c8;
+ --line:#30435b;
+ --navy:#0b1f3a;
+ --navy-2:#24476d;
+ --accent:#8db5e3;
+ --accent-soft:#243b57;
+ --user:#263d59;
+ --shadow:0 18px 48px rgba(0,0,0,.25);
+ color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--ink);
+ font-family:"DM Sans",sans-serif;
+ min-height:100vh;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+ outline:3px solid #78a4d5;
+ outline-offset:2px;
+}
+button:disabled{opacity:.55;cursor:not-allowed}
+.app{min-height:100vh;display:flex;flex-direction:column}
+
+.topbar{
+ position:sticky;
+ top:0;
+ z-index:40;
+ background:color-mix(in srgb,var(--bg) 90%,transparent);
+ backdrop-filter:blur(18px);
+ border-bottom:1px solid var(--line);
+}
+.nav-wrap{
+ width:min(1240px,calc(100% - 42px));
+ min-height:76px;
+ margin:auto;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:20px;
+}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+ text-decoration:none;
+ color:var(--ink);
+ min-width:max-content;
+}
+.brand-mark{
+ width:43px;
+ height:43px;
+ border-radius:15px;
+ background:linear-gradient(145deg,#173c65,#071a31);
+ display:grid;
+ place-items:center;
+ color:white;
+ box-shadow:0 7px 18px rgba(11,31,58,.18);
+}
+.brand-mark svg{
+ width:25px;height:25px;
+ stroke:currentColor;fill:none;
+ stroke-width:1.8;
+}
+.brand-name{
+ font:800 16px Manrope;
+ letter-spacing:-.5px;
+}
+.brand-name span{color:var(--accent)}
+.brand-sub{
+ font-size:9px;
+ letter-spacing:1.6px;
+ color:var(--muted);
+ margin-top:3px;
+}
+.nav{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ flex-wrap:wrap;
+}
+.nav button{
+ border:0;
+ background:transparent;
+ color:var(--muted);
+ padding:10px 12px;
+ border-radius:12px;
+ font-size:12px;
+ font-weight:700;
+ transition:.2s;
+}
+.nav button:hover,.nav button.active{
+ background:var(--accent-soft);
+ color:var(--accent);
+}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{
+ width:39px;height:39px;
+ border:1px solid var(--line);
+ border-radius:13px;
+ background:var(--surface);
+ color:var(--ink);
+ display:grid;
+ place-items:center;
+ transition:.2s;
+}
+.icon-btn:hover{
+ border-color:var(--accent);
+ background:var(--accent-soft);
+}
+.icon-btn svg{
+ width:17px;height:17px;
+ stroke:currentColor;fill:none;
+ stroke-width:1.8;
+ stroke-linecap:round;
+ stroke-linejoin:round;
+}
+.menu-toggle{display:none}
+.status-pill{
+ font-size:10px;
+ font-weight:700;
+ color:#28664a;
+ background:#e5f4eb;
+ padding:8px 11px;
+ border-radius:99px;
+ white-space:nowrap;
+}
+body.dark .status-pill{background:#203d32;color:#a5dfbd}
+
+main{
+ width:min(1120px,calc(100% - 42px));
+ margin:0 auto;
+ flex:1;
+ padding:28px 0 54px;
+}
+.view{display:none;animation:fade .25s ease}
+.view.active{display:block}
+@keyframes fade{
+ from{opacity:0;transform:translateY(6px)}
+ to{opacity:1;transform:none}
+}
+
+.hero{text-align:center;padding:clamp(38px,7vh,76px) 0 34px}
+.eyebrow{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ border:1px solid var(--line);
+ background:var(--surface);
+ border-radius:99px;
+ padding:8px 13px;
+ color:var(--accent);
+ font-size:10px;
+ letter-spacing:1.1px;
+ text-transform:uppercase;
+ font-weight:800;
+}
+.hero h1{
+ font:800 clamp(36px,5.3vw,60px)/1.12 Manrope;
+ letter-spacing:-2.7px;
+ margin:20px 0 13px;
+}
+.hero h1 span{color:var(--accent)}
+.hero>p,.page-heading p{
+ max-width:610px;
+ margin:0 auto;
+ color:var(--muted);
+ font-size:14px;
+ line-height:1.8;
+}
+.hero-composer{
+ max-width:790px;
+ margin:30px auto 0;
+ padding:13px;
+ background:var(--surface);
+ border:1px solid var(--line);
+ border-radius:23px;
+ box-shadow:var(--shadow);
+ text-align:left;
+}
+.hero-composer:focus-within,.composer:focus-within{
+ border-color:var(--accent);
+ box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 13%,transparent),var(--shadow);
+}
+textarea{resize:vertical}
+.hero-composer textarea,.composer textarea{
+ width:100%;
+ min-height:64px;
+ max-height:190px;
+ border:0;
+ outline:0;
+ background:transparent;
+ color:var(--ink);
+ padding:9px;
+ font-size:14px;
+ line-height:1.65;
+}
+textarea::placeholder{color:var(--muted)}
+.composer-bottom{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ padding:4px 3px 0;
+}
+.muted-note{font-size:10px;color:var(--muted)}
+
+.btn-primary,.btn-secondary{
+ border-radius:12px;
+ padding:11px 16px;
+ font-size:12px;
+ font-weight:800;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ transition:.2s;
+}
+.btn-primary{
+ border:0;
+ background:var(--navy);
+ color:white;
+}
+.btn-primary:hover{
+ background:var(--navy-2);
+ transform:translateY(-1px);
+}
+.btn-secondary{
+ border:1px solid var(--line);
+ background:var(--surface);
+ color:var(--ink);
+}
+.btn-secondary:hover{
+ background:var(--accent-soft);
+ border-color:var(--accent);
+}
+.quick-prompts{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ flex-wrap:wrap;
+ margin:17px auto 0;
+}
+.chip{
+ border:1px solid var(--line);
+ background:var(--surface);
+ color:var(--muted);
+ padding:9px 13px;
+ border-radius:99px;
+ font-size:11px;
+ transition:.2s;
+}
+.chip:hover{
+ color:var(--accent);
+ border-color:var(--accent);
+ background:var(--accent-soft);
+}
+.section-head{
+ display:flex;
+ align-items:end;
+ justify-content:space-between;
+ gap:15px;
+ margin:43px 0 15px;
+}
+.section-head h2{font:800 17px Manrope;margin:0}
+.section-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
+
+.card-grid{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:14px;
+}
+.feature-card{
+ border:1px solid var(--line);
+ background:var(--surface);
+ border-radius:18px;
+ padding:18px;
+ text-align:left;
+ min-height:145px;
+ transition:.2s;
+ color:var(--ink);
+}
+.feature-card:hover{
+ transform:translateY(-3px);
+ border-color:var(--accent);
+ box-shadow:var(--shadow);
+}
+.feature-icon{
+ width:39px;height:39px;
+ display:grid;
+ place-items:center;
+ border-radius:13px;
+ background:var(--accent-soft);
+ color:var(--accent);
+ margin-bottom:13px;
+}
+.feature-icon svg{
+ width:19px;height:19px;
+ stroke:currentColor;fill:none;
+ stroke-width:1.7;
+}
+.feature-card b{display:block;font-size:12px;margin-bottom:6px}
+.feature-card small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.65;
+}
+
+.chat-shell{
+ max-width:900px;
+ margin:0 auto;
+ min-height:calc(100vh - 180px);
+ display:flex;
+ flex-direction:column;
+}
+.chat-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ padding:5px 0 17px;
+ border-bottom:1px solid var(--line);
+}
+.chat-head h2{font:800 17px Manrope;margin:0}
+.chat-head p{font-size:10px;color:var(--muted);margin:5px 0 0}
+.head-actions{display:flex;gap:7px;flex-wrap:wrap}
+.head-actions .icon-btn{width:35px;height:35px}
+.messages{
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ gap:20px;
+ padding:25px 2px;
+ overflow:auto;
+ max-height:calc(100vh - 330px);
+ min-height:240px;
+}
+.empty-chat{
+ text-align:center;
+ color:var(--muted);
+ padding:65px 15px;
+ font-size:13px;
+ line-height:1.8;
+}
+.empty-chat strong{
+ display:block;
+ color:var(--ink);
+ font:800 19px Manrope;
+ margin-bottom:8px;
+}
+.message{
+ display:flex;
+ gap:11px;
+ max-width:88%;
+ align-items:flex-start;
+}
+.message.user{align-self:flex-end;flex-direction:row-reverse}
+.avatar{
+ width:35px;height:35px;
+ flex:0 0 35px;
+ border-radius:13px;
+ background:var(--accent-soft);
+ color:var(--accent);
+ display:grid;
+ place-items:center;
+ font-weight:800;
+ font-size:11px;
+}
+.message.user .avatar{
+ background:var(--surface-3);
+ color:var(--ink);
+}
+.message-body{min-width:0}
+.msg-meta{font-size:10px;color:var(--muted);margin:0 4px 6px}
+.bubble{
+ background:var(--surface);
+ border:1px solid var(--line);
+ border-radius:5px 17px 17px 17px;
+ padding:13px 15px;
+ font-size:13px;
+ line-height:1.75;
+ white-space:pre-wrap;
+ overflow-wrap:anywhere;
+ box-shadow:0 5px 17px rgba(11,31,58,.025);
+}
+.message.user .bubble{
+ background:var(--user);
+ border-radius:17px 5px 17px 17px;
+}
+.msg-actions{display:flex;gap:9px;margin:6px 3px 0}
+.msg-actions button{
+ border:0;background:transparent;
+ color:var(--muted);
+ font-size:10px;
+ padding:3px 4px;
+}
+.msg-actions button:hover{color:var(--accent)}
+.typing{display:inline-flex;gap:4px}
+.typing i{
+ width:5px;height:5px;
+ background:var(--accent);
+ border-radius:50%;
+ animation:bounce .8s infinite alternate;
+}
+.typing i:nth-child(2){animation-delay:.2s}
+.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bounce{to{opacity:.35;transform:translateY(-4px)}}
+
+.composer-wrap{
+ position:sticky;
+ bottom:0;
+ padding:12px 0 0;
+ background:linear-gradient(180deg,transparent,var(--bg) 20%);
+}
+.composer{
+ background:var(--surface);
+ border:1px solid var(--line);
+ border-radius:20px;
+ padding:11px;
+ box-shadow:var(--shadow);
+}
+.composer textarea{min-height:57px;font-size:13px}
+.composer-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tool-btn,.tool-select{
+ border:1px solid var(--line);
+ background:var(--surface-2);
+ color:var(--muted);
+ border-radius:10px;
+ padding:8px 10px;
+ font-size:10px;
+}
+.tool-btn:hover{color:var(--accent);border-color:var(--accent)}
+.send-btn{
+ width:39px;height:39px;
+ border:0;
+ border-radius:13px;
+ background:var(--navy);
+ color:white;
+ display:grid;
+ place-items:center;
+}
+.send-btn svg{
+ width:17px;height:17px;
+ stroke:currentColor;fill:none;
+ stroke-width:2;
+}
+.disclaimer{
+ text-align:center;
+ color:var(--muted);
+ font-size:9px;
+ padding:9px 0 0;
+}
+.attach-preview{display:flex;gap:7px;flex-wrap:wrap;padding:7px 5px}
+.file-chip{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ background:var(--accent-soft);
+ color:var(--accent);
+ border-radius:9px;
+ padding:7px 9px;
+ font-size:10px;
+ max-width:220px;
+}
+.file-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-chip button{border:0;background:transparent;color:inherit}
+
+.page-heading{text-align:center;padding:35px 0 32px}
+.page-heading h1{
+ font:800 clamp(30px,4vw,44px) Manrope;
+ letter-spacing:-1.6px;
+ margin:13px 0;
+}
+.info-grid,.plans-grid{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:14px;
+}
+.info-card,.plan-card,.payment-card,.settings-card,.payment-detail{
+ background:var(--surface);
+ border:1px solid var(--line);
+ border-radius:19px;
+ padding:21px;
+}
+.info-card h3,.plan-card h3{font:800 14px Manrope;margin:0 0 10px}
+.info-card p,.plan-card p{
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.8;
+ margin:0;
+}
+.plan-card{position:relative}
+.plan-card.popular{
+ border-color:var(--accent);
+ background:linear-gradient(155deg,var(--surface),var(--accent-soft));
+}
+.plan-price{font:800 31px Manrope;margin:17px 0 4px}
+.plan-price small{font:500 10px "DM Sans";color:var(--muted)}
+.plan-card ul{
+ padding-left:17px;
+ color:var(--muted);
+ font-size:11px;
+ line-height:2.1;
+ min-height:105px;
+}
+.plan-card .btn-primary,.plan-card .btn-secondary{width:100%}
+.plans-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.payment-grid{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:13px;
+}
+.payment-card{
+ text-align:left;
+ transition:.2s;
+ color:var(--ink);
+ cursor:pointer;
+}
+.payment-card:hover,.payment-card.selected{
+ border-color:var(--accent);
+ background:var(--accent-soft);
+ transform:translateY(-2px);
+}
+.payment-card .feature-icon{width:43px;height:43px}
+.payment-card b{display:block;font-size:12px;margin:12px 0 5px}
+.payment-card p{
+ font-size:10px;
+ color:var(--muted);
+ line-height:1.6;
+ margin:0;
+}
+.payment-detail{
+ max-width:760px;
+ margin:18px auto 0;
+}
+.payment-detail h2{font:800 19px Manrope;margin:0 0 8px}
+.payment-detail p{font-size:12px;color:var(--muted);line-height:1.7}
+.notice{
+ background:var(--accent-soft);
+ border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);
+ border-radius:13px;
+ padding:12px 14px;
+ color:var(--ink);
+ font-size:11px;
+ line-height:1.7;
+ margin:14px 0;
+}
+.payment-input{
+ width:100%;
+ padding:12px 13px;
+ margin:6px 0 12px;
+ border:1px solid var(--line);
+ border-radius:11px;
+ background:var(--surface);
+ color:var(--ink);
+ font-size:12px;
+}
+.payment-label{font-size:11px;font-weight:700;color:var(--ink)}
+.payment-method-content{
+ border:1px solid var(--line);
+ border-radius:15px;
+ padding:17px;
+ margin:16px 0;
+}
+.qr-image-placeholder{
+ width:190px;
+ height:190px;
+ max-width:100%;
+ margin:15px auto;
+ border:2px dashed var(--accent);
+ border-radius:14px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:9px;
+ background:var(--accent-soft);
+ color:var(--accent);
+ text-align:center;
+}
+.qr-image-placeholder strong{font-size:14px}
+.qr-image-placeholder span{font-size:10px}
+.subscription-preview{
+ max-width:760px;
+ margin:18px auto;
+ padding:20px;
+ border:1px solid var(--line);
+ border-radius:18px;
+ background:var(--surface);
+}
+.subscription-preview h3{font:800 15px Manrope;margin:0 0 12px}
+.subscription-preview p{font-size:12px;color:var(--muted);line-height:1.7}
+.preview-row{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ border-bottom:1px solid var(--line);
+ padding:10px 0;
+ font-size:12px;
+}
+.preview-row:last-child{border:0}
+.preview-row span:last-child{font-weight:700;text-align:right}
+.settings-card{max-width:760px;margin:auto;padding:0;overflow:hidden}
+.setting-row{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:18px;
+ padding:17px 20px;
+ border-bottom:1px solid var(--line);
+}
+.setting-row:last-child{border:0}
+.setting-row b{display:block;font-size:12px}
+.setting-row small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.setting-row select{
+ border:1px solid var(--line);
+ background:var(--surface-2);
+ color:var(--ink);
+ border-radius:9px;
+ padding:8px;
+ font-size:11px;
+}
+.footer{
+ border-top:1px solid var(--line);
+ padding:27px max(21px,calc((100% - 1120px)/2));
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:20px;
+ color:var(--muted);
+ font-size:10px;
+}
+.footer-brand{font:800 13px Manrope;color:var(--ink);letter-spacing:.4px}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap}
+.footer button{
+ border:0;
+ background:transparent;
+ color:var(--muted);
+ font-size:10px;
+ padding:0;
+}
+.footer button:hover{color:var(--accent)}
+.toast{
+ position:fixed;
+ bottom:24px;
+ left:50%;
+ transform:translate(-50%,15px);
+ opacity:0;
+ pointer-events:none;
+ background:var(--navy);
+ color:white;
+ padding:11px 16px;
+ border-radius:12px;
+ font-size:11px;
+ z-index:100;
+ transition:.2s;
+ box-shadow:var(--shadow);
+ max-width:90%;
+ text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.back-top{
+ position:fixed;
+ right:22px;
+ bottom:22px;
+ width:43px;height:43px;
+ border:1px solid var(--line);
+ border-radius:14px;
+ background:var(--surface);
+ color:var(--ink);
+ box-shadow:var(--shadow);
+ display:none;
+ place-items:center;
+ z-index:25;
+}
+.back-top.show{display:grid}
+.back-top svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Receipt popup */
+.receipt-modal{
+ position:fixed;
+ inset:0;
+ z-index:200;
+ background:rgba(4,15,30,.68);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+}
+.receipt-modal.show{display:flex}
+.receipt-dialog{
+ width:min(540px,100%);
+ max-height:90vh;
+ overflow:auto;
+ background:var(--surface);
+ color:var(--ink);
+ border:1px solid var(--line);
+ border-radius:20px;
+ padding:24px;
+ box-shadow:0 25px 80px rgba(0,0,0,.3);
+}
+.receipt-dialog h2{font:800 22px Manrope;margin:0 0 5px}
+.receipt-dialog>p{font-size:11px;color:var(--muted)}
+.receipt-paper{
+ background:var(--surface-2);
+ border:1px dashed var(--muted);
+ border-radius:13px;
+ padding:18px;
+ margin:16px 0;
+}
+.receipt-paper h3{text-align:center;font:800 15px Manrope;margin:0 0 5px}
+.receipt-paper .receipt-sub{text-align:center;font-size:10px;color:var(--muted)}
+.receipt-actions{display:flex;gap:9px;flex-wrap:wrap}
+.receipt-actions button{flex:1}
+.modal-close{
+ position:absolute;
+ right:25px;
+ top:20px;
+ border:0;
+ background:transparent;
+ color:white;
+ font-size:27px;
+}
+@media print{
+ body *{visibility:hidden!important}
+ #receiptPaper,#receiptPaper *{visibility:visible!important}
+ #receiptPaper{
+  position:absolute;
+  left:0;top:0;
+  width:100%;
+  background:white!important;
+  color:#111!important;
+  border:0!important;
+ }
+ .receipt-paper *{color:#111!important}
+ .receipt-modal{position:static;background:white!important;padding:0}
+ .receipt-dialog{box-shadow:none;border:0;max-height:none;overflow:visible}
+ .receipt-actions,.modal-close,.receipt-dialog>p{display:none!important}
+}
+
+@media(max-width:900px){
+ .nav-wrap{width:calc(100% - 28px)}
+ .nav{gap:0}
+ .nav button{padding:9px 8px;font-size:11px}
+ .card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .payment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .nav-wrap{min-height:68px}
+ .menu-toggle{display:grid}
+ .nav{
+  display:none;
+  position:absolute;
+  top:68px;
+  left:12px;
+  right:12px;
+  padding:10px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  grid-template-columns:repeat(3,1fr);
+ }
+ .nav.open{display:grid}
+ .nav button{padding:11px 7px}
+ .status-pill{display:none}
+ main{width:calc(100% - 30px);padding-top:20px}
+ .hero{padding-top:38px}
+ .hero h1{letter-spacing:-1.7px}
+ .info-grid,.plans-grid{grid-template-columns:1fr}
+ .chat-shell{min-height:calc(100vh - 145px)}
+ .message{max-width:96%}
+ .messages{max-height:calc(100vh - 320px)}
+ .footer{align-items:flex-start;flex-direction:column;padding:24px 18px}
+}
+@media(max-width:430px){
+ .brand-name{font-size:14px}
+ .brand-sub{font-size:8px}
+ .brand-mark{width:38px;height:38px}
+ .nav-actions{gap:5px}
+ .icon-btn{width:36px;height:36px}
+ .card-grid,.payment-grid{grid-template-columns:1fr 1fr;gap:9px}
+ .feature-card{padding:14px;min-height:135px}
+ .composer-bottom{align-items:flex-end}
+ .muted-note{max-width:135px;line-height:1.5}
+ .chat-head{align-items:flex-start}
+ .head-actions{gap:4px}
+ .head-actions .icon-btn{width:32px;height:32px}
+ .message{gap:7px}
+ .avatar{width:29px;height:29px;flex-basis:29px}
+ .bubble{padding:11px 12px;font-size:12px}
+ .receipt-dialog{padding:17px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header class="topbar">
+ <div class="nav-wrap">
+
+  <a class="brand" href="#" aria-label="Sandhu AI home" data-view="home">
+   <div class="brand-mark">
+    <svg viewBox="0 0 40 40">
+     <path d="M20 4.5 24.2 15l10.3 5-10.3 5L20 35.5 15.8 25 5.5 20l10.3-5L20 4.5Z" stroke-linejoin="round"/>
+     <circle cx="20" cy="20" r="3" fill="currentColor" stroke="none"/>
+    </svg>
+   </div>
+   <div>
+    <div class="brand-name">SANDHU <span>AI</span></div>
+    <div class="brand-sub">INTELLIGENT WORKSPACE</div>
+   </div>
+  </a>
+
+  <nav class="nav" id="mainNav" aria-label="Main navigation">
+   <button class="active" data-view="home">Home</button>
+   <button data-view="chat">Chat</button>
+   <button data-view="discover">Discover</button>
+   <button data-view="plans">Plans</button>
+   <button data-view="payments">Payments</button>
+   <button data-view="about">About</button>
+   <button data-view="settings">Settings</button>
+  </nav>
+
+  <div class="nav-actions">
+   <span class="status-pill">● Workspace ready</span>
+
+   <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
+    <svg viewBox="0 0 24 24"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg>
+   </button>
+
+   <button class="icon-btn menu-toggle" id="menuBtn" title="Open navigation" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+   </button>
+  </div>
+ </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section class="view active" id="homeView">
+ <div class="hero">
+  <div class="eyebrow">✦ Your intelligent workspace</div>
+
+  <h1>Ideas deserve<br><span>a beautiful beginning.</span></h1>
+
+  <p>Welcome to SANDHU AI. A thoughtful space to learn, explore, write and build — with clarity in every conversation.</p>
+
+  <div class="hero-composer">
+   <textarea id="homeInput" rows="2" placeholder="What would you like to work on today?"></textarea>
+
+   <div class="composer-bottom">
+    <span class="muted-note">Ask a question, explore an idea or start something new.</span>
+    <button class="btn-primary" id="homeSend">Start conversation ↗</button>
+   </div>
+  </div>
+
+  <div class="quick-prompts">
+   <button class="chip" data-prompt="Explain a difficult topic in simple steps.">Learn something</button>
+   <button class="chip" data-prompt="Help me write clear, professional content.">Write something</button>
+   <button class="chip" data-prompt="Help me debug my code step by step.">Fix my code</button>
+   <button class="chip" data-prompt="Suggest a practical project idea for me.">Find an idea</button>
+  </div>
+ </div>
+
+ <div class="section-head">
+  <div>
+   <h2>A workspace for every idea</h2>
+   <p>Choose a direction and get started.</p>
+  </div>
+ </div>
+
+ <div class="card-grid">
+  <button class="feature-card" data-prompt="Act as my study assistant. Explain my topic step by step.">
+   <span class="feature-icon">▤</span>
+   <b>Study assistant</b>
+   <small>Break down complex concepts into clear, manageable steps.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Help me build a software project and guide me step by step.">
+   <span class="feature-icon">⌘</span>
+   <b>Code studio</b>
+   <small>Plan features, understand errors and improve your code.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Help me analyse a dataset using Python, SQL or Excel.">
+   <span class="feature-icon">▥</span>
+   <b>Data analysis</b>
+   <small>Explore data, SQL queries and analytical thinking.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Help me prepare for a job interview with practice questions.">
+   <span class="feature-icon">♙</span>
+   <b>Interview prep</b>
+   <small>Practise answers and prepare with more confidence.</small>
+  </button>
+ </div>
+</section>
+
+<!-- CHAT -->
+<section class="view" id="chatView">
+ <div class="chat-shell">
+
+  <div class="chat-head">
+   <div>
+    <h2>Your conversation</h2>
+    <p>Ask naturally. Take it one step at a time.</p>
+   </div>
+
+   <div class="head-actions">
+    <button class="icon-btn" id="newChatBtn" title="New chat">＋</button>
+    <button class="icon-btn" id="refreshBtn" title="Refresh chat">↻</button>
+    <button class="icon-btn" id="clearChatBtn" title="Clear chat">⌫</button>
+    <button class="icon-btn" id="exportBtn" title="Export chat">⇩</button>
+   </div>
+  </div>
+
+  <div class="messages" id="messages">
+   <div class="empty-chat">
+    <strong>Where shall we begin?</strong>
+    Your next idea starts with a question.
+   </div>
+  </div>
+
+  <div class="composer-wrap">
+   <div class="composer">
+
+    <div class="attach-preview" id="attachPreview"></div>
+
+    <textarea id="messageInput" rows="2" placeholder="Message SANDHU AI..."></textarea>
+
+    <div class="composer-bottom">
+     <div class="composer-tools">
+      <button class="tool-btn" id="attachBtn">＋ Attach</button>
+
+      <input type="file" id="fileInput" hidden multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx">
+
+      <button class="tool-btn" id="voiceBtn">◉ Voice</button>
+
+      <select class="tool-select" id="modeSelect" aria-label="Response style">
+       <option value="default">Balanced</option>
+       <option value="concise">Concise</option>
+       <option value="detailed">Detailed</option>
+      </select>
+     </div>
+
+     <button class="send-btn" id="sendBtn" aria-label="Send message">➤</button>
+    </div>
+   </div>
+
+   <div class="disclaimer">SANDHU AI may make mistakes. Verify important information independently.</div>
+  </div>
+ </div>
+</section>
+
+<!-- DISCOVER -->
+<section class="view" id="discoverView">
+ <div class="page-heading">
+  <div class="eyebrow">Discover</div>
+  <h1>Make room for possibility.</h1>
+  <p>Pick a starting point. Your assistant can help turn it into a practical next step.</p>
+ </div>
+
+ <div class="card-grid">
+  <button class="feature-card" data-prompt="Create a realistic weekly study timetable for me.">
+   <span class="feature-icon">▦</span><b>Plan my week</b>
+   <small>Build a balanced and realistic routine.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Suggest a beginner-friendly software project and guide me.">
+   <span class="feature-icon">✧</span><b>Project ideas</b>
+   <small>Find a useful idea worth building.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Quiz me on a topic and explain my mistakes.">
+   <span class="feature-icon">✓</span><b>Take a quiz</b>
+   <small>Practise and learn from mistakes.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Review my code for bugs and readability.">
+   <span class="feature-icon">⌘</span><b>Code review</b>
+   <small>Make your code clearer and reliable.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Help me prepare a professional resume.">
+   <span class="feature-icon">▤</span><b>Resume builder</b>
+   <small>Present your experience with clarity.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Teach me a new skill with a beginner roadmap.">
+   <span class="feature-icon">◇</span><b>Skill builder</b>
+   <small>Learn with a practical roadmap.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Help me prepare a presentation outline.">
+   <span class="feature-icon">▧</span><b>Presentation</b>
+   <small>Organise a clear and engaging talk.</small>
+  </button>
+
+  <button class="feature-card" data-prompt="Compare two options with pros, cons and a recommendation.">
+   <span class="feature-icon">⇄</span><b>Compare options</b>
+   <small>Make decisions with structured thinking.</small>
+  </button>
+ </div>
+</section>
+
+<!-- ABOUT -->
+<section class="view" id="aboutView">
+ <div class="page-heading">
+  <div class="eyebrow">The story behind the workspace</div>
+  <h1>Meet <span style="color:var(--accent)">SANDHU AI.</span></h1>
+  <p>A personal AI assistant project focused on making everyday learning, problem-solving and creativity more approachable.</p>
+ </div>
+
+ <div class="info-grid">
+  <div class="info-card">
+   <h3>Our purpose</h3>
+   <p>Bring useful assistant experiences into one organised workspace — from learning and writing to coding and planning.</p>
+  </div>
+
+  <div class="info-card">
+   <h3>Our design values</h3>
+   <p>Clarity, simplicity and thoughtful details. A calm interface should help people focus on what matters.</p>
+  </div>
+
+  <div class="info-card">
+   <h3>Created by</h3>
+   <p>Built by Anmol Singh Sandhu as an evolving technology project. The goal is to keep learning, improving and building.</p>
+  </div>
+ </div>
+
+ <div class="notice">
+  The range and quality of answers depend on the knowledge engine and services connected to the backend. The interface alone does not turn a rule-based chatbot into a generative AI model.
+ </div>
+</section>
+
+<!-- PLANS -->
+<section class="view" id="plansView">
+ <div class="page-heading">
+  <div class="eyebrow">Plans & access</div>
+  <h1>A plan for your pace.</h1>
+  <p>Explore the demo subscription plans for SANDHU AI BOT.</p>
+ </div>
+
+ <div class="plans-grid">
+
+  <div class="plan-card">
+   <h3>Free</h3>
+   <div class="plan-price">₹0 <small>/ forever</small></div>
+   <p>For exploring the workspace.</p>
+   <ul>
+    <li>Basic chat workspace</li>
+    <li>Basic response styles</li>
+    <li>Local chat history</li>
+   </ul>
+   <button class="btn-secondary" data-plan="Free" data-amount="0">Choose Free</button>
+  </div>
+
+  <div class="plan-card">
+   <h3>Starter</h3>
+   <div class="plan-price">₹299 <small>/ month</small></div>
+   <p>For everyday learning.</p>
+   <ul>
+    <li>Starter access</li>
+    <li>Learning workspace</li>
+    <li>Chat history</li>
+   </ul>
+   <button class="btn-secondary" data-plan="Starter" data-amount="299">Choose Starter</button>
+  </div>
+
+  <div class="plan-card popular">
+   <div class="eyebrow">Most popular</div>
+   <h3>Pro</h3>
+   <div class="plan-price">₹599 <small>/ month</small></div>
+   <p>For regular learning and building.</p>
+   <ul>
+    <li>Pro access</li>
+    <li>Expanded workspace</li>
+    <li>More productivity tools</li>
+   </ul>
+   <button class="btn-primary" data-plan="Pro" data-amount="599">Choose Pro</button>
+  </div>
+
+  <div class="plan-card">
+   <h3>Premium</h3>
+   <div class="plan-price">₹999 <small>/ month</small></div>
+   <p>For creators and frequent users.</p>
+   <ul>
+    <li>Premium access</li>
+    <li>Advanced workspace options</li>
+    <li>Extended productivity features</li>
+   </ul>
+   <button class="btn-secondary" data-plan="Premium" data-amount="999">Choose Premium</button>
+  </div>
+
+  <div class="plan-card">
+   <h3>Ultimate</h3>
+   <div class="plan-price">₹1,499 <small>/ month</small></div>
+   <p>For a complete workspace experience.</p>
+   <ul>
+    <li>Ultimate access</li>
+    <li>All listed demo features</li>
+    <li>Extended workspace options</li>
+   </ul>
+   <button class="btn-secondary" data-plan="Ultimate" data-amount="1499">Choose Ultimate</button>
+  </div>
+
+ </div>
+
+ <div class="notice">
+  These are demonstration prices and plan descriptions. They do not activate paid features or represent a live subscription service.
+ </div>
+</section>
+
+<!-- PAYMENTS -->
+<section class="view" id="paymentsView">
+
+ <div class="page-heading">
+  <div class="eyebrow">Demo checkout</div>
+  <h1>Choose how to pay.</h1>
+  <p>Practice checkout screen for SANDHU AI BOT. No real money is collected.</p>
+ </div>
+
+ <div class="payment-detail">
+  <h2 id="paymentTitle">Choose a subscription plan</h2>
+  <p id="paymentText">Select a plan and payment method to continue.</p>
+ </div>
+
+ <div class="payment-grid">
+
+  <button class="payment-card" data-method="upi">
+   <span class="feature-icon">⌁</span>
+   <b>UPI</b>
+   <p>Display a sample UPI ID.</p>
+  </button>
+
+  <button class="payment-card" data-method="qr">
+   <span class="feature-icon">▦</span>
+   <b>QR / Scanner</b>
+   <p>Replace the placeholder with your own QR image later.</p>
+  </button>
+
+  <button class="payment-card" data-method="card">
+   <span class="feature-icon">▣</span>
+   <b>Debit / Credit Card</b>
+   <p>Editable dummy card form.</p>
+  </button>
+
+  <button class="payment-card" data-method="cash">
+   <span class="feature-icon">₹</span>
+   <b>Cash</b>
+   <p>Demo offline payment option.</p>
+  </button>
+
+ </div>
+
+ <div class="payment-detail" id="paymentDetail">
+
+  <h2 id="methodTitle">Payment details</h2>
+  <p id="methodDescription">Select your payment method above.</p>
+
+  <div id="paymentFields" class="payment-method-content">
+   Select a payment method to view details.
+  </div>
+
+  <div class="notice" id="paymentNotice">
+   This is a dummy payment demonstration. No real payment will be processed.
+  </div>
+
+  <button class="btn-primary" id="startPaymentBtn" disabled>
+   Select plan and payment method
+  </button>
+
+ </div>
+
+ <!-- SUBSCRIPTION PREVIEW -->
+ <div class="subscription-preview">
+  <h3>Subscription preview</h3>
+
+  <div class="preview-row">
+   <span>Selected plan</span>
+   <span id="previewPlan">Not selected</span>
+  </div>
+
+  <div class="preview-row">
+   <span>Plan amount</span>
+   <span id="previewAmount">₹0</span>
+  </div>
+
+  <div class="preview-row">
+   <span>Duration</span>
+   <span id="previewDuration">30 days</span>
+  </div>
+
+  <div class="preview-row">
+   <span>Status</span>
+   <span id="previewStatus">Preview only</span>
+  </div>
+
+  <p>
+   This preview does not activate a real subscription. It is only for testing the interface.
+  </p>
+ </div>
+
+</section>
+
+<!-- SETTINGS -->
+<section class="view" id="settingsView">
+ <div class="page-heading">
+  <div class="eyebrow">Your preferences</div>
+  <h1>Make it feel like yours.</h1>
+  <p>Adjust the way your workspace looks and responds.</p>
+ </div>
+
+ <div class="settings-card">
+
+  <div class="setting-row">
+   <div>
+    <b>Appearance</b>
+    <small>Switch between light and dark themes.</small>
+   </div>
+   <button class="btn-secondary" id="settingsTheme">Toggle theme</button>
+  </div>
+
+  <div class="setting-row">
+   <div>
+    <b>Default response style</b>
+    <small>Choose your preferred response length.</small>
+   </div>
+   <select id="settingsMode">
+    <option value="default">Balanced</option>
+    <option value="concise">Concise</option>
+    <option value="detailed">Detailed</option>
+   </select>
+  </div>
+
+  <div class="setting-row">
+   <div>
+    <b>Chat history</b>
+    <small>Saved in this browser on this device.</small>
+   </div>
+   <span class="eyebrow">Local storage</span>
+  </div>
+
+  <div class="setting-row">
+   <div>
+    <b>Privacy</b>
+    <small>Never enter passwords, OTPs or real card details into demo forms.</small>
+   </div>
+   <span>⌑</span>
+  </div>
+
+ </div>
+</section>
+
+</main>
+
+<footer class="footer">
+ <div>
+  <div class="footer-brand">SANDHU AI BOT</div>
+  <div style="margin-top:5px">A thoughtful space to think, learn and create.</div>
+ </div>
+
+ <div class="footer-links">
+  <button data-view="about">About</button>
+  <button data-view="plans">Plans</button>
+  <button data-view="payments">Payments</button>
+  <button data-view="settings">Settings</button>
+  <button id="footerTop">Back to top ↑</button>
+ </div>
+
+ <div>© <span id="year"></span> SANDHU AI</div>
+</footer>
+
+</div>
+
+<button class="back-top" id="backTop" aria-label="Scroll to top">↑</button>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- RECEIPT MODAL -->
+<div class="receipt-modal" id="receiptModal">
+ <div class="receipt-dialog">
+
+  <h2>Demo payment receipt</h2>
+  <p>Your sample receipt has been generated.</p>
+
+  <div class="receipt-paper" id="receiptPaper">
+
+   <h3>SANDHU AI BOT</h3>
+   <div class="receipt-sub">DEMO PAYMENT RECEIPT</div>
+
+   <hr>
+
+   <div class="preview-row">
+    <span>Reference ID</span>
+    <span id="receiptReference"></span>
+   </div>
+
+   <div class="preview-row">
+    <span>Plan</span>
+    <span id="receiptPlan"></span>
+   </div>
+
+   <div class="preview-row">
+    <span>Amount</span>
+    <span id="receiptAmount"></span>
+   </div>
+
+   <div class="preview-row">
+    <span>Method</span>
+    <span id="receiptMethod"></span>
+   </div>
+
+   <div class="preview-row">
+    <span>Date</span>
+    <span id="receiptDate"></span>
+   </div>
+
+   <div class="preview-row">
+    <span>Status</span>
+    <span>DEMO ONLY</span>
+   </div>
+
+   <hr>
+
+   <p style="text-align:center;font-size:11px;font-weight:800">
+    NOT A REAL PAYMENT
+   </p>
+
+   <p style="text-align:center;font-size:10px">
+    This receipt is generated for demonstration purposes only.
+   </p>
+
+  </div>
+
+  <div class="receipt-actions">
+   <button class="btn-primary" id="downloadReceiptBtn">Download receipt</button>
+   <button class="btn-secondary" id="printReceiptBtn">Save as PDF</button>
+   <button class="btn-secondary" id="closeReceiptBtn">Close</button>
+  </div>
+
+ </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const STORAGE_KEY="sandhu_ai_chats_v3";
+const THEME_KEY="sandhu_ai_theme_v3";
+
+const state={
+ chats:[],
+ currentId:null,
+ files:[],
+ busy:false,
+ selectedPlan:null,
+ selectedAmount:0,
+ selectedMethod:null,
+ receiptText:""
+};
+
+const PLAN_DURATION="30 days";
+
+function makeId(){
+ return "chat_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+}
+
+function toast(message){
+ const el=$("toast");
+ el.textContent=message;
+ el.classList.add("show");
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>el.classList.remove("show"),2800);
+}
+
+function currentChat(){
+ return state.chats.find(c=>c.id===state.currentId);
+}
+
+function saveChats(){
+ try{
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(state.chats));
+ }catch(e){
+  toast("Storage is full. Export a conversation first.");
+ }
+}
+
+function createChat(show=true){
+ const chat={
+  id:makeId(),
+  title:"New conversation",
+  messages:[],
+  updatedAt:Date.now()
+ };
+
+ state.chats.unshift(chat);
+ state.currentId=chat.id;
+ saveChats();
+ renderMessages();
+ showView("chat");
+
+ if(show)toast("New chat created");
+}
+
+function loadChats(){
+ try{
+  const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+  if(Array.isArray(data))state.chats=data;
+ }catch(e){
+  state.chats=[];
+ }
+
+ if(!state.chats.length){
+  createChat(false);
+ }else{
+  state.currentId=state.chats[0].id;
+  renderMessages();
+ }
+}
+
+function renderMessages(){
+
+ const root=$("messages");
+ const chat=currentChat();
+
+ root.innerHTML="";
+
+ if(!chat||!chat.messages.length){
+  root.innerHTML='<div class="empty-chat"><strong>Where shall we begin?</strong>Your next idea starts with a question.</div>';
+  return;
+ }
+
+ chat.messages.forEach((m,index)=>{
+
+  const row=document.createElement("div");
+  row.className="message "+m.role;
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=m.role==="user"?"You":"SA";
+
+  const body=document.createElement("div");
+  body.className="message-body";
+
+  const meta=document.createElement("div");
+  meta.className="msg-meta";
+  meta.textContent=m.role==="user"?"You":"SANDHU AI";
+
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+  bubble.textContent=m.text;
+
+  body.append(meta,bubble);
+
+  if(m.role==="assistant"&&!m.pending){
+
+   const actions=document.createElement("div");
+   actions.className="msg-actions";
+
+   const copy=document.createElement("button");
+   copy.textContent="Copy";
+   copy.onclick=()=>copyText(m.text);
+   actions.append(copy);
+
+   if(index===chat.messages.length-1){
+    const regen=document.createElement("button");
+    regen.textContent="Regenerate";
+    regen.onclick=regenerateLast;
+    actions.append(regen);
+   }
+
+   body.append(actions);
+  }
+
+  row.append(avatar,body);
+  root.append(row);
+
+ });
+
+ requestAnimationFrame(()=>root.scrollTop=root.scrollHeight);
+}
+
+async function copyText(text){
+ try{
+  await navigator.clipboard.writeText(text);
+  toast("Copied");
+ }catch(e){
+  const a=document.createElement("textarea");
+  a.value=text;
+  document.body.append(a);
+  a.select();
+  document.execCommand("copy");
+  a.remove();
+  toast("Copied");
+ }
+}
+
+function showView(name){
+
+ const allowed=[
+  "home","chat","discover","about",
+  "plans","payments","settings"
+ ];
+
+ if(!allowed.includes(name))return;
+
+ document.querySelectorAll(".view").forEach(v=>{
+  v.classList.toggle("active",v.id===name+"View");
+ });
+
+ document.querySelectorAll(".nav [data-view]").forEach(b=>{
+  b.classList.toggle("active",b.dataset.view===name);
+ });
+
+ $("mainNav").classList.remove("open");
+
+ window.scrollTo({top:0,behavior:"smooth"});
+
+ if(name==="chat"){
+  setTimeout(()=>$("messageInput").focus(),100);
+ }
+}
+
+document.querySelectorAll("[data-view]").forEach(b=>{
+ b.addEventListener("click",()=>showView(b.dataset.view));
+});
+
+$("menuBtn").onclick=()=>{
+ $("mainNav").classList.toggle("open");
+};
+
+function toggleTheme(){
+
+ document.body.classList.toggle("dark");
+
+ localStorage.setItem(
+  THEME_KEY,
+  document.body.classList.contains("dark")?"dark":"light"
+ );
+}
+
+if(localStorage.getItem(THEME_KEY)==="dark"){
+ document.body.classList.add("dark");
+}
+
+$("themeBtn").onclick=toggleTheme;
+$("settingsTheme").onclick=toggleTheme;
+
+$("year").textContent=new Date().getFullYear();
+
+function startPrompt(text){
+
+ const prompt=text.trim();
+
+ if(!prompt){
+  return toast("Please enter a question first");
+ }
+
+ if(!currentChat())createChat(false);
+
+ showView("chat");
+ $("messageInput").value=prompt;
+ sendMessage();
+}
+
+$("homeSend").onclick=()=>{
+ startPrompt($("homeInput").value);
+};
+
+$("homeInput").addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  $("homeSend").click();
+ }
+});
+
+document.querySelectorAll("[data-prompt]").forEach(b=>{
+ b.addEventListener("click",()=>startPrompt(b.dataset.prompt));
+});
+
+async function sendMessage(){
+
+ if(state.busy)return;
+
+ const input=$("messageInput");
+ const text=input.value.trim();
+
+ if(!text&&!state.files.length)return;
+
+ if(state.files.length){
+  toast("Files are selected, but this backend currently accepts text only. Upload processing needs a backend upload route.");
+  if(!text)return;
+ }
+
+ if(!currentChat())createChat(false);
+
+ const chat=currentChat();
+
+ chat.messages.push({
+  role:"user",
+  text:text||"[Attachment selected] "+state.files.map(f=>f.name).join(", ")
+ });
+
+ if(chat.title==="New conversation"){
+  chat.title=(text||"Attachment").slice(0,36);
+ }
+
+ input.value="";
+ state.busy=true;
+ $("sendBtn").disabled=true;
+
+ const pending={
+  role:"assistant",
+  text:"",
+  pending:true
+ };
+
+ chat.messages.push(pending);
+
+ saveChats();
+ renderMessages();
+
+ const last=$("messages").querySelector(".message:last-child .bubble");
+
+ if(last){
+  const dots=document.createElement("span");
+  dots.className="typing";
+  dots.innerHTML="<i></i><i></i><i></i>";
+  last.append(dots);
+ }
+
+ try{
+
+  const response=await fetch("/api/chat",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    message:text,
+    model:$("modeSelect").value
+   })
+  });
+
+  const data=await response.json().catch(()=>({}));
+
+  if(!response.ok){
+   throw new Error(data.error||"Server returned "+response.status);
+  }
+
+  pending.text=
+   data.reply??
+   data.response??
+   data.answer??
+   "The server returned an unexpected response.";
+
+ }catch(error){
+
+  pending.text=
+   "I couldn't connect to the chat service. Check that Flask is running and POST /api/chat is configured. ("+
+   error.message+")";
+
+ }finally{
+
+  delete pending.pending;
+  state.busy=false;
+  $("sendBtn").disabled=false;
+
+  state.files=[];
+  renderFilePreview();
+  $("fileInput").value="";
+
+  saveChats();
+  renderMessages();
+ }
+}
+
+$("sendBtn").onclick=sendMessage;
+
+$("messageInput").addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  sendMessage();
+ }
+});
+
+$("newChatBtn").onclick=()=>createChat();
+
+$("refreshBtn").onclick=()=>{
+ renderMessages();
+ toast("Chat refreshed");
+};
+
+function clearCurrentChat(){
+
+ const chat=currentChat();
+ if(!chat)return;
+
+ if(!confirm("Clear all messages in this conversation?"))return;
+
+ chat.messages=[];
+ chat.title="New conversation";
+ chat.updatedAt=Date.now();
+
+ saveChats();
+ renderMessages();
+ toast("Chat cleared");
+}
+
+$("clearChatBtn").onclick=clearCurrentChat;
+
+$("exportBtn").onclick=()=>{
+
+ const chat=currentChat();
+
+ if(!chat||!chat.messages.length){
+  return toast("No messages to export");
+ }
+
+ const content=chat.messages.map(m=>
+  (m.role==="user"?"You":"SANDHU AI")+":\n"+m.text
+ ).join("\n\n");
+
+ const blob=new Blob([content],{type:"text/plain"});
+ const url=URL.createObjectURL(blob);
+
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="sandhu-ai-chat.txt";
+ a.click();
+
+ URL.revokeObjectURL(url);
+};
+
+async function regenerateLast(){
+
+ const chat=currentChat();
+
+ if(!chat||state.busy)return;
+
+ const last=chat.messages[chat.messages.length-1];
+
+ if(last?.role!=="assistant")return;
+
+ chat.messages.pop();
+
+ const user=chat.messages.pop();
+
+ if(user?.role!=="user")return;
+
+ const text=user.text;
+
+ saveChats();
+ renderMessages();
+
+ $("messageInput").value=text;
+
+ await sendMessage();
+}
+
+$("attachBtn").onclick=()=>{
+ $("fileInput").click();
+};
+
+$("fileInput").onchange=e=>{
+
+ const chosen=Array.from(e.target.files||[]);
+ const max=25*1024*1024;
+
+ for(const file of chosen){
+
+  if(file.size>max){
+   toast(file.name+" is larger than 25 MB");
+   continue;
+  }
+
+  state.files.push(file);
+ }
+
+ renderFilePreview();
+
+ if(state.files.length){
+  toast(state.files.length+" attachment(s) selected");
+ }
+};
+
+function renderFilePreview(){
+
+ const root=$("attachPreview");
+ root.innerHTML="";
+
+ state.files.forEach((file,index)=>{
+
+  const chip=document.createElement("div");
+  chip.className="file-chip";
+
+  const name=document.createElement("span");
+  name.textContent=file.name;
+
+  const remove=document.createElement("button");
+  remove.type="button";
+  remove.textContent="×";
+  remove.title="Remove attachment";
+
+  remove.onclick=()=>{
+   state.files.splice(index,1);
+   renderFilePreview();
+  };
+
+  chip.append(name,remove);
+  root.append(chip);
+ });
+}
+
+$("voiceBtn").onclick=()=>{
+
+ const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+ if(!Speech){
+  return toast("Voice input is not supported in this browser");
+ }
+
+ const recognition=new Speech();
+
+ recognition.lang="en-IN";
+
+ recognition.onresult=e=>{
+  $("messageInput").value+=e.results[0][0].transcript;
+ };
+
+ recognition.onerror=()=>{
+  toast("Voice input could not start");
+ };
+
+ recognition.start();
+};
+
+$("settingsMode").onchange=e=>{
+ $("modeSelect").value=e.target.value;
+};
+
+/* =========================================
+   SANDHU AI BOT — DEMO PAYMENT SYSTEM
+   No real payment or gateway connection
+========================================= */
+
+const methodNames={
+ upi:"UPI",
+ qr:"QR / Scanner",
+ card:"Debit / Credit Card",
+ cash:"Cash"
+};
+
+document.querySelectorAll("[data-plan]").forEach(btn=>{
+
+ btn.addEventListener("click",()=>{
+
+  state.selectedPlan=btn.dataset.plan;
+  state.selectedAmount=Number(btn.dataset.amount||0);
+  state.selectedMethod=null;
+
+  document.querySelectorAll(".payment-card").forEach(card=>{
+   card.classList.remove("selected");
+  });
+
+  showView("payments");
+  updatePaymentDetail();
+
+  toast(state.selectedPlan+" plan selected");
+ });
+});
+
+document.querySelectorAll("[data-method]").forEach(btn=>{
+
+ btn.addEventListener("click",()=>{
+
+  state.selectedMethod=btn.dataset.method;
+
+  document.querySelectorAll(".payment-card").forEach(card=>{
+   card.classList.toggle("selected",card===btn);
+  });
+
+  updatePaymentDetail();
+ });
+});
+
+function updatePaymentDetail(){
+
+ $("paymentTitle").textContent=
+  state.selectedPlan
+   ?state.selectedPlan+" plan · ₹"+state.selectedAmount
+   :"Choose a subscription plan";
+
+ $("paymentText").textContent=
+  state.selectedMethod
+   ?methodNames[state.selectedMethod]+" selected"
+   :"Select a payment method below.";
+
+ $("previewPlan").textContent=state.selectedPlan||"Not selected";
+ $("previewAmount").textContent="₹"+state.selectedAmount;
+ $("previewDuration").textContent=PLAN_DURATION;
+ $("previewStatus").textContent="Demo only — not activated";
+
+ const fields=$("paymentFields");
+
+ if(!state.selectedMethod){
+
+  $("methodTitle").textContent="Payment details";
+  $("methodDescription").textContent="Select your payment method above.";
+  fields.textContent="Select a payment method to view its demo details.";
+
+ }else if(state.selectedMethod==="upi"){
+
+  $("methodTitle").textContent="UPI payment details";
+  $("methodDescription").textContent="Sample UPI details for display only.";
+
+  fields.innerHTML=`
+   <div class="payment-label">Sample UPI ID</div>
+   <input class="payment-input" id="demoUpiId" value="6263171727@upi" readonly>
+
+   <div class="payment-label">Mobile number</div>
+   <input class="payment-input" id="demoMobile" value="6263171727" inputmode="numeric">
+
+   <button class="btn-secondary" type="button" id="copyUpiBtn">
+    Copy sample UPI ID
+   </button>
+
+   <p style="font-size:10px;color:var(--muted)">
+    This is a sample display only. The UPI ID has not been verified and cannot process payments.
+   </p>
+  `;
+
+  $("copyUpiBtn").onclick=()=>{
+   copyText("6263171727@upi");
+  };
+
+ }else if(state.selectedMethod==="qr"){
+
+  $("methodTitle").textContent="QR / Scanner";
+  $("methodDescription").textContent="Your own QR image can be added here later.";
+
+  fields.innerHTML=`
+   <div class="qr-image-placeholder">
+    <div style="font-size:42px">▦</div>
+    <strong>YOUR QR IMAGE</strong>
+    <span>DEMO PLACEHOLDER</span>
+   </div>
+
+   <p style="font-size:11px;color:var(--muted);text-align:center">
+    Replace this placeholder with your own scanner image when you are ready.
+   </p>
+
+   <!--
+    LATER QR IMAGE REPLACEMENT:
+
+    Replace the placeholder above with:
+
+    <img src="your-scanner.png"
+         alt="Payment QR"
+         style="width:190px;height:190px;object-fit:contain">
+   -->
+  `;
+
+ }else if(state.selectedMethod==="card"){
+
+  $("methodTitle").textContent="Card details";
+  $("methodDescription").textContent="Editable dummy card form.";
+// SANDHU
+  fields.innerHTML=`
+   <div class="payment-label">Cardholder name</div>
+   <input class="payment-input" id="dummyCardName" value="Anmol Sandhu">
+
+   <div class="payment-label">Card number</div>
+   <input class="payment-input" id="dummyCardNumber"
+    value="4111 1111 1111 1111"
+    inputmode="numeric" maxlength="19">
+
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div>
+     <div class="payment-label">Expiry date</div>
+     <input class="payment-input" id="dummyExpiry" value="12/29" maxlength="5">
+    </div>
+    <div>
+     <div class="payment-label">CVV (dummy)</div>
+     <input class="payment-input" id="dummyCvv" value="123" maxlength="3" inputmode="numeric">
+    </div>
+   </div>
+
+   <p style="font-size:10px;color:var(--muted)">
+    These are editable sample values. Do not enter real card details. Nothing is sent to a bank or payment gateway.
+   </p>
+  `;
+
+ }else if(state.selectedMethod==="cash"){
+
+  $("methodTitle").textContent="Cash payment";
+  $("methodDescription").textContent="Offline payment demonstration.";
+
+  fields.innerHTML=`
+   <div class="payment-label">Payment mode</div>
+   <input class="payment-input" value="Cash — demo record only" readonly>
+
+   <p style="font-size:11px;color:var(--muted)">
+    This option creates a demo receipt only. No cash is collected or confirmed.
+   </p>
+  `;
+ }
+
+ const ready=!!state.selectedPlan&&!!state.selectedMethod;
+
+ $("startPaymentBtn").disabled=!ready;
+
+ $("startPaymentBtn").textContent=
+  ready?"Confirm demo payment":"Select plan and payment method";
+
+ $("paymentNotice").textContent=
+  "DEMO MODE: This screen does not connect to Razorpay, a bank, UPI app or any real payment service. No money will be collected.";
+}
+
+$("startPaymentBtn").onclick=()=>{
+
+ if(!state.selectedPlan){
+  return toast("Choose a plan first");
+ }
+
+ if(!state.selectedMethod){
+  return toast("Choose a payment method first");
+ }
+
+ generateDemoReceipt();
+};
+
+function generateDemoReceipt(){
+
+ const reference=
+  "SANDHU-DEMO-"+Date.now().toString().slice(-10);
+
+ const date=new Date().toLocaleString("en-IN",{
+  dateStyle:"medium",
+  timeStyle:"short"
+ });
+
+ $("receiptReference").textContent=reference;
+ $("receiptPlan").textContent=state.selectedPlan;
+ $("receiptAmount").textContent="₹"+state.selectedAmount;
+ $("receiptMethod").textContent=methodNames[state.selectedMethod];
+ $("receiptDate").textContent=date;
+// SANDHU
+ state.receiptText=
+  "SANDHU AI BOT — DEMO PAYMENT RECEIPT\n"+
+  "-----------------------------------\n"+
+  "Reference ID: "+reference+"\n"+
+  "Plan: "+state.selectedPlan+"\n"+
+  "Amount: ₹"+state.selectedAmount+"\n"+
+  "Method: "+methodNames[state.selectedMethod]+"\n"+
+  "Date: "+date+"\n"+
+  "Status: DEMO ONLY — NOT A REAL PAYMENT\n"+
+  "Subscription: NOT ACTIVATED\n"+
+  "-----------------------------------\n"+
+  "This receipt is generated for demonstration purposes only.";
+
+ $("receiptModal").classList.add("show");
+
+ toast("Demo receipt generated");
+}
+
+$("downloadReceiptBtn").onclick=()=>{
+
+ if(!state.receiptText)return;
+
+ const blob=new Blob(
+  [state.receiptText],
+  {type:"text/plain;charset=utf-8"}
+ );
+
+ const url=URL.createObjectURL(blob);
+
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="SANDHU-AI-DEMO-RECEIPT.txt";
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ URL.revokeObjectURL(url);
+
+ toast("Receipt downloaded");
+};
+
+$("printReceiptBtn").onclick=()=>{
+ window.print();
+};
+
+function closeReceipt(){
+ $("receiptModal").classList.remove("show");
+}
+
+$("closeReceiptBtn").onclick=closeReceipt;
+
+$("receiptModal").addEventListener("click",e=>{
+ if(e.target===$("receiptModal")){
+  closeReceipt();
+ }
+});
+
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape"){
+  closeReceipt();
+ }
+});
+
+/* FOOTER AND SCROLL */
+
+$("backTop").onclick=()=>{
+ $("footerTop").click();
+};
+
+$("footerTop").onclick=()=>{
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+
+window.addEventListener("scroll",()=>{
+ $("backTop").classList.toggle("show",window.scrollY>350);
+});
+
+/* START APP */
+
+loadChats();
+updatePaymentDetail();
+
+</script>
+</body>
+</html>
+
+<!-- ANMOL SANDHU -->

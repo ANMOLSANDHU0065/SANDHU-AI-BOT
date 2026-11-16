@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f7f5fc">
+<title>SANDHU AI BOT — Intelligent Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#f7f5fc;--surface:#fff;--surface-2:#f1eef9;--surface-3:#e9e3f6;
+ --ink:#28243a;--muted:#817b91;--line:#e9e4f1;--violet:#8064c9;
+ --violet-dark:#6548ad;--violet-soft:#eee8fb;--user:#eee9f8;
+ --shadow:0 16px 44px rgba(57,42,91,.075);--radius:20px;color-scheme:light
+}
+body.dark{
+ --bg:#171521;--surface:#211e2c;--surface-2:#2b2738;--surface-3:#39334a;
+ --ink:#f3effb;--muted:#aaa2ba;--line:#393347;--violet:#b49ae9;
+ --violet-dark:#c5b1f0;--violet-soft:#39304d;--user:#342d45;
+ --shadow:0 18px 48px rgba(0,0,0,.25);color-scheme:dark
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #a58be5;outline-offset:2px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.app{min-height:100vh;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav-wrap{width:min(1240px,calc(100% - 42px));min-height:76px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink);min-width:max-content}
+.brand-mark{width:42px;height:42px;border-radius:15px;background:linear-gradient(145deg,#e9e0fb,#cdbdf0);display:grid;place-items:center;color:#5e469a;box-shadow:inset 0 0 0 1px #cbbbe9}
+.brand-mark svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.8}
+.brand-name{font:800 16px Manrope;letter-spacing:-.5px}.brand-name span{color:var(--violet-dark)}
+.brand-sub{font-size:9px;letter-spacing:1.6px;color:var(--muted);margin-top:3px}
+.nav{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap}
+.nav button{border:0;background:transparent;color:var(--muted);padding:10px 12px;border-radius:12px;font-size:12px;font-weight:700;transition:.2s}
+.nav button:hover,.nav button.active{background:var(--violet-soft);color:var(--violet-dark)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:39px;height:39px;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink);display:grid;place-items:center;transition:.2s}
+.icon-btn:hover{border-color:var(--violet);background:var(--violet-soft)}
+.icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.menu-toggle{display:none}
+.status-pill{font-size:10px;font-weight:700;color:#587e68;background:#e9f4ed;padding:8px 11px;border-radius:99px;white-space:nowrap}
+body.dark .status-pill{background:#263c31;color:#a8d6b7}
+main{width:min(1120px,calc(100% - 42px));margin:0 auto;flex:1;padding:28px 0 54px}
+.view{display:none;animation:fade .25s ease}.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:clamp(38px,7vh,76px) 0 34px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:8px 13px;color:var(--violet-dark);font-size:10px;letter-spacing:1.1px;text-transform:uppercase;font-weight:800}
+.hero h1{font:800 clamp(36px,5.3vw,60px)/1.12 Manrope;letter-spacing:-2.7px;margin:20px 0 13px}
+.hero h1 span{color:var(--violet)}
+.hero>p,.page-heading p{max-width:610px;margin:0 auto;color:var(--muted);font-size:14px;line-height:1.8}
+.hero-composer{max-width:790px;margin:30px auto 0;padding:13px;background:var(--surface);border:1px solid var(--line);border-radius:23px;box-shadow:var(--shadow);text-align:left}
+.hero-composer:focus-within,.composer:focus-within{border-color:var(--violet);box-shadow:0 0 0 4px color-mix(in srgb,var(--violet) 13%,transparent),var(--shadow)}
+textarea{resize:vertical}
+.hero-composer textarea,.composer textarea{width:100%;min-height:64px;max-height:190px;border:0;outline:0;background:transparent;color:var(--ink);padding:9px;font-size:14px;line-height:1.65}
+textarea::placeholder{color:var(--muted)}
+.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 3px 0}
+.muted-note{font-size:10px;color:var(--muted)}
+.btn-primary,.btn-secondary{border-radius:12px;padding:11px 16px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.btn-primary{border:0;background:var(--violet);color:white}.btn-primary:hover{background:var(--violet-dark);transform:translateY(-1px)}
+.btn-secondary{border:1px solid var(--line);background:var(--surface);color:var(--ink)}.btn-secondary:hover{background:var(--violet-soft);border-color:var(--violet)}
+.quick-prompts{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:17px auto 0}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:9px 13px;border-radius:99px;font-size:11px;transition:.2s}
+.chip:hover{color:var(--violet-dark);border-color:var(--violet);background:var(--violet-soft)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:43px 0 15px}
+.section-head h2{font:800 17px Manrope;margin:0}.section-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
+.card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.feature-card{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:18px;text-align:left;min-height:145px;transition:.2s;color:var(--ink)}
+.feature-card:hover{transform:translateY(-3px);border-color:#b8a4e4;box-shadow:var(--shadow)}
+.feature-icon{width:39px;height:39px;display:grid;place-items:center;border-radius:13px;background:var(--violet-soft);color:var(--violet-dark);margin-bottom:13px}
+.feature-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.feature-card b{display:block;font-size:12px;margin-bottom:6px}.feature-card small{display:block;color:var(--muted);font-size:10px;line-height:1.65}
+.chat-shell{max-width:900px;margin:0 auto;min-height:calc(100vh - 180px);display:flex;flex-direction:column}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:5px 0 17px;border-bottom:1px solid var(--line)}
+.chat-head h2{font:800 17px Manrope;margin:0}.chat-head p{font-size:10px;color:var(--muted);margin:5px 0 0}
+.head-actions{display:flex;gap:7px;flex-wrap:wrap}.head-actions .icon-btn{width:35px;height:35px}
+.messages{flex:1;display:flex;flex-direction:column;gap:20px;padding:25px 2px;overflow:auto;max-height:calc(100vh - 330px);min-height:240px}
+.empty-chat{text-align:center;color:var(--muted);padding:65px 15px;font-size:13px;line-height:1.8}
+.empty-chat strong{display:block;color:var(--ink);font:800 19px Manrope;margin-bottom:8px}
+.message{display:flex;gap:11px;max-width:88%;align-items:flex-start}.message.user{align-self:flex-end;flex-direction:row-reverse}
+.avatar{width:35px;height:35px;flex:0 0 35px;border-radius:13px;background:var(--violet-soft);color:var(--violet-dark);display:grid;place-items:center;font-weight:800;font-size:11px}
+.message.user .avatar{background:var(--surface-3);color:var(--ink)}
+.message-body{min-width:0}.msg-meta{font-size:10px;color:var(--muted);margin:0 4px 6px}
+.bubble{background:var(--surface);border:1px solid var(--line);border-radius:5px 17px 17px 17px;padding:13px 15px;font-size:13px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 5px 17px rgba(35,25,55,.025)}
+.message.user .bubble{background:var(--user);border-radius:17px 5px 17px 17px}
+.msg-actions{display:flex;gap:9px;margin:6px 3px 0}.msg-actions button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:3px 4px}.msg-actions button:hover{color:var(--violet-dark)}
+.typing{display:inline-flex;gap:4px}.typing i{width:5px;height:5px;background:var(--violet);border-radius:50%;animation:bounce .8s infinite alternate}.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bounce{to{opacity:.35;transform:translateY(-4px)}}
+.composer-wrap{position:sticky;bottom:0;padding:12px 0 0;background:linear-gradient(180deg,transparent,var(--bg) 20%)}
+.composer{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:11px;box-shadow:var(--shadow)}
+.composer textarea{min-height:57px;font-size:13px}
+.composer-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tool-btn,.tool-select{border:1px solid var(--line);background:var(--surface-2);color:var(--muted);border-radius:10px;padding:8px 10px;font-size:10px}
+.tool-btn:hover{color:var(--violet-dark);border-color:var(--violet)}
+.send-btn{width:39px;height:39px;border:0;border-radius:13px;background:var(--violet);color:white;display:grid;place-items:center}
+.send-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.disclaimer{text-align:center;color:var(--muted);font-size:9px;padding:9px 0 0}
+.attach-preview{display:flex;gap:7px;flex-wrap:wrap;padding:7px 5px}.file-chip{display:flex;align-items:center;gap:7px;background:var(--violet-soft);color:var(--violet-dark);border-radius:9px;padding:7px 9px;font-size:10px;max-width:220px}.file-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-chip button{border:0;background:transparent;color:inherit}
+.page-heading{text-align:center;padding:35px 0 32px}.page-heading h1{font:800 clamp(30px,4vw,44px) Manrope;letter-spacing:-1.6px;margin:13px 0}
+.info-grid,.plans-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.info-card,.plan-card,.payment-card,.settings-card,.payment-detail{background:var(--surface);border:1px solid var(--line);border-radius:19px;padding:21px}
+.info-card h3,.plan-card h3{font:800 14px Manrope;margin:0 0 10px}.info-card p,.plan-card p{color:var(--muted);font-size:11px;line-height:1.8;margin:0}
+.plan-card{position:relative}.plan-card.popular{border-color:#b9a5e4;background:linear-gradient(155deg,var(--surface),var(--violet-soft))}
+.plan-price{font:800 31px Manrope;margin:17px 0 4px}.plan-price small{font:500 10px "DM Sans";color:var(--muted)}
+.plan-card ul{padding-left:17px;color:var(--muted);font-size:11px;line-height:2.1;min-height:105px}
+.plan-card .btn-primary,.plan-card .btn-secondary{width:100%}
+.payment-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.payment-card{text-align:left;transition:.2s;color:var(--ink);cursor:pointer}.payment-card:hover,.payment-card.selected{border-color:var(--violet);background:var(--violet-soft);transform:translateY(-2px)}
+.payment-card .feature-icon{width:43px;height:43px}.payment-card b{display:block;font-size:12px;margin:12px 0 5px}.payment-card p{font-size:10px;color:var(--muted);line-height:1.6;margin:0}
+.payment-detail{max-width:720px;margin:18px auto 0}.payment-detail h2{font:800 19px Manrope;margin:0 0 8px}.payment-detail p{font-size:12px;color:var(--muted);line-height:1.7}
+.notice{background:var(--violet-soft);border:1px solid color-mix(in srgb,var(--violet) 22%,transparent);border-radius:13px;padding:12px 14px;color:var(--ink);font-size:11px;line-height:1.7;margin:14px 0}
+.settings-card{max-width:760px;margin:auto;padding:0;overflow:hidden}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 20px;border-bottom:1px solid var(--line)}.setting-row:last-child{border:0}
+.setting-row b{display:block;font-size:12px}.setting-row small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.setting-row select{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:9px;padding:8px;font-size:11px}
+.footer{border-top:1px solid var(--line);padding:27px max(21px,calc((100% - 1120px)/2));display:flex;justify-content:space-between;align-items:center;gap:20px;color:var(--muted);font-size:10px}
+.footer-brand{font:800 13px Manrope;color:var(--ink);letter-spacing:.4px}.footer-links{display:flex;gap:16px;flex-wrap:wrap}.footer button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:0}.footer button:hover{color:var(--violet-dark)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#29243a;color:white;padding:11px 16px;border-radius:12px;font-size:11px;z-index:100;transition:.2s;box-shadow:var(--shadow);max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+.back-top{position:fixed;right:22px;bottom:22px;width:43px;height:43px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);box-shadow:var(--shadow);display:none;place-items:center;z-index:25}.back-top.show{display:grid}.back-top svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+@media(max-width:900px){.nav-wrap{width:calc(100% - 28px)}.nav{gap:0}.nav button{padding:9px 8px;font-size:11px}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.payment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){
+ .nav-wrap{min-height:68px}.menu-toggle{display:grid}.nav{display:none;position:absolute;top:68px;left:12px;right:12px;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);grid-template-columns:repeat(3,1fr)}
+ .nav.open{display:grid}.nav button{padding:11px 7px}.status-pill{display:none}
+ main{width:calc(100% - 30px);padding-top:20px}.hero{padding-top:38px}.hero h1{letter-spacing:-1.7px}
+ .info-grid,.plans-grid{grid-template-columns:1fr}.chat-shell{min-height:calc(100vh - 145px)}.message{max-width:96%}.messages{max-height:calc(100vh - 320px)}
+ .footer{align-items:flex-start;flex-direction:column;padding:24px 18px}
+}
+@media(max-width:430px){.brand-name{font-size:14px}.brand-sub{font-size:8px}.brand-mark{width:38px;height:38px}.nav-actions{gap:5px}.icon-btn{width:36px;height:36px}.card-grid,.payment-grid{grid-template-columns:1fr 1fr;gap:9px}.feature-card{padding:14px;min-height:135px}.composer-bottom{align-items:flex-end}.muted-note{max-width:135px;line-height:1.5}.chat-head{align-items:flex-start}.head-actions{gap:4px}.head-actions .icon-btn{width:32px;height:32px}.message{gap:7px}.avatar{width:29px;height:29px;flex-basis:29px}.bubble{padding:11px 12px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+ <div class="nav-wrap">
+  <a class="brand" href="#" aria-label="Sandhu AI home" data-view="home">
+   <div class="brand-mark"><svg viewBox="0 0 40 40"><path d="M20 4.5 24.2 15l10.3 5-10.3 5L20 35.5 15.8 25 5.5 20l10.3-5L20 4.5Z" stroke-linejoin="round"/><circle cx="20" cy="20" r="3" fill="currentColor" stroke="none"/></svg></div>
+   <div><div class="brand-name">SANDHU <span>AI</span></div><div class="brand-sub">INTELLIGENT WORKSPACE</div></div>
+  </a>
+  <nav class="nav" id="mainNav" aria-label="Main navigation">
+   <button class="active" data-view="home">Home</button><button data-view="chat">Chat</button><button data-view="discover">Discover</button><button data-view="plans">Plans</button><button data-view="payments">Payments</button><button data-view="about">About</button>
+  </nav>
+  <div class="nav-actions">
+   <span class="status-pill">● Workspace ready</span>
+   <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></button>
+   <button class="icon-btn menu-toggle" id="menuBtn" title="Open navigation" aria-label="Open navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+ </div>
+</header>
+
+<main>
+<section class="view active" id="homeView">
+ <div class="hero">
+  <div class="eyebrow">✦ Your intelligent workspace</div>
+  <h1>Ideas deserve<br><span>a beautiful beginning.</span></h1>
+  <p>Welcome to SANDHU AI. A thoughtful space to learn, explore, write and build — with clarity in every conversation.</p>
+  <div class="hero-composer">
+   <textarea id="homeInput" rows="2" placeholder="What would you like to work on today?"></textarea>
+   <div class="composer-bottom"><span class="muted-note">Ask a question, explore an idea or start something new.</span><button class="btn-primary" id="homeSend">Start conversation ↗</button></div>
+  </div>
+  <div class="quick-prompts">
+   <button class="chip" data-prompt="Explain a difficult topic in simple steps.">Learn something</button>
+   <button class="chip" data-prompt="Help me write clear, professional content.">Write something</button>
+   <button class="chip" data-prompt="Help me debug my code step by step.">Fix my code</button>
+   <button class="chip" data-prompt="Suggest a practical project idea for me.">Find an idea</button>
+  </div>
+ </div>
+ <div class="section-head"><div><h2>A workspace for every idea</h2><p>Choose a direction and get started.</p></div></div>
+ <div class="card-grid">
+  <button class="feature-card" data-prompt="Act as my study assistant. Explain my topic step by step."><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21zM4 5.5V21M8 7h8M8 11h8"/></svg></span><b>Study assistant</b><small>Break down complex concepts into clear, manageable steps.</small></button>
+  <button class="feature-card" data-prompt="Help me build a software project and guide me step by step."><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg></span><b>Code studio</b><small>Plan features, understand errors and improve your code.</small></button>
+  <button class="feature-card" data-prompt="Help me analyse a dataset using Python, SQL or Excel."><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h17M8 16v-4M13 16V8M18 16V5"/></svg></span><b>Data analysis</b><small>Explore data, SQL queries and analytical thinking.</small></button>
+  <button class="feature-card" data-prompt="Help me prepare for a job interview with practice questions."><span class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><b>Interview prep</b><small>Practise answers and prepare with more confidence.</small></button>
+ </div>
+</section>
+
+<section class="view" id="chatView">
+ <div class="chat-shell">
+  <div class="chat-head"><div><h2>Your conversation</h2><p>Ask naturally. Take it one step at a time.</p></div>
+   <div class="head-actions">
+    <button class="icon-btn" id="newChatBtn" title="New chat" aria-label="New chat"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button class="icon-btn" id="refreshBtn" title="Refresh chat" aria-label="Refresh chat"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg></button>
+    <button class="icon-btn" id="clearChatBtn" title="Clear chat" aria-label="Clear chat"><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></button>
+    <button class="icon-btn" id="exportBtn" title="Export chat" aria-label="Export chat"><svg viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 20h16"/></svg></button>
+   </div>
+  </div>
+  <div class="messages" id="messages"><div class="empty-chat"><strong>Where shall we begin?</strong>Your next idea starts with a question.</div></div>
+  <div class="composer-wrap">
+   <div class="composer">
+    <div class="attach-preview" id="attachPreview"></div>
+    <textarea id="messageInput" rows="2" placeholder="Message SANDHU AI..."></textarea>
+    <div class="composer-bottom">
+     <div class="composer-tools">
+      <button class="tool-btn" id="attachBtn" title="Attach image, video, document or audio">＋ Attach</button>
+      <input type="file" id="fileInput" hidden multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx">
+      <button class="tool-btn" id="voiceBtn" title="Voice input">◉ Voice</button>
+      <select class="tool-select" id="modeSelect" aria-label="Response style"><option value="default">Balanced</option><option value="concise">Concise</option><option value="detailed">Detailed</option></select>
+     </div>
+     <button class="send-btn" id="sendBtn" aria-label="Send message"><svg viewBox="0 0 24 24"><path d="m5 12 14-7-5 14-3-6-6-1Z M11 13l8-8"/></svg></button>
+    </div>
+   </div>
+   <div class="disclaimer">SANDHU AI may make mistakes. Verify important information independently.</div>
+  </div>
+ </div>
+</section>
+
+<section class="view" id="discoverView">
+ <div class="page-heading"><div class="eyebrow">Discover</div><h1>Make room for possibility.</h1><p>Pick a starting point. Your assistant can help turn it into a practical next step.</p></div>
+ <div class="card-grid">
+  <button class="feature-card" data-prompt="Create a realistic weekly study timetable for me."><span class="feature-icon">▦</span><b>Plan my week</b><small>Build a balanced and realistic routine.</small></button>
+  <button class="feature-card" data-prompt="Suggest a beginner-friendly software project and guide me."><span class="feature-icon">✧</span><b>Project ideas</b><small>Find a useful idea worth building.</small></button>
+  <button class="feature-card" data-prompt="Quiz me on a topic and explain my mistakes."><span class="feature-icon">✓</span><b>Take a quiz</b><small>Practise and learn from mistakes.</small></button>
+  <button class="feature-card" data-prompt="Review my code for bugs and readability."><span class="feature-icon">⌘</span><b>Code review</b><small>Make your code clearer and reliable.</small></button>
+  <button class="feature-card" data-prompt="Help me prepare a professional resume."><span class="feature-icon">▤</span><b>Resume builder</b><small>Present your experience with clarity.</small></button>
+  <button class="feature-card" data-prompt="Teach me a new skill with a beginner roadmap."><span class="feature-icon">◇</span><b>Skill builder</b><small>Learn with a practical roadmap.</small></button>
+  <button class="feature-card" data-prompt="Help me prepare a presentation outline."><span class="feature-icon">▧</span><b>Presentation</b><small>Organise a clear and engaging talk.</small></button>
+  <button class="feature-card" data-prompt="Compare two options with pros, cons and a recommendation."><span class="feature-icon">⇄</span><b>Compare options</b><small>Make decisions with structured thinking.</small></button>
+ </div>
+</section>
+
+<section class="view" id="aboutView">
+ <div class="page-heading"><div class="eyebrow">The story behind the workspace</div><h1>Meet <span style="color:var(--violet)">SANDHU AI.</span></h1><p>A personal AI assistant project focused on making everyday learning, problem-solving and creativity more approachable.</p></div>
+ <div class="info-grid">
+  <div class="info-card"><h3>Our purpose</h3><p>Bring useful assistant experiences into one organised workspace — from learning and writing to coding and planning.</p></div>
+  <div class="info-card"><h3>Our design values</h3><p>Clarity, simplicity and thoughtful details. A calm interface should help people focus on what matters.</p></div>
+  <div class="info-card"><h3>Created by</h3><p>Built by Anmol Singh Sandhu as an evolving technology project. The goal is to keep learning, improving and building.</p></div>
+ </div>
+ <div class="notice">The range and quality of answers depend on the knowledge engine and services connected to the backend. The interface alone does not turn a rule-based chatbot into a generative AI model.</div>
+</section>
+
+<section class="view" id="plansView">
+ <div class="page-heading"><div class="eyebrow">Plans & access</div><h1>A plan for your pace.</h1><p>Choose a plan to continue to secure checkout. Plan benefits should be configured before accepting payments.</p></div>
+ <div class="plans-grid">
+  <div class="plan-card"><h3>Free</h3><div class="plan-price">₹0 <small>/ forever</small></div><p>For exploring the workspace.</p><ul><li>Chat workspace</li><li>Basic response styles</li><li>Local chat history</li></ul><button class="btn-secondary" data-plan="Free">Current plan</button></div>
+  <div class="plan-card popular"><div class="eyebrow">Popular</div><h3>Pro</h3><div class="plan-price">₹199 <small>/ month</small></div><p>For regular learning and building.</p><ul><li>Pro plan access (when enabled)</li><li>Workspace features</li><li>Organised conversations</li></ul><button class="btn-primary" data-plan="Pro" data-amount="199">Choose Pro</button></div>
+  <div class="plan-card"><h3>Premium</h3><div class="plan-price">₹499 <small>/ month</small></div><p>For creators and frequent users.</p><ul><li>Premium plan access (when enabled)</li><li>Expanded workspace options</li><li>Priority support (if provided)</li></ul><button class="btn-secondary" data-plan="Premium" data-amount="499">Choose Premium</button></div>
+ </div>
+ <div class="notice">These are example prices. Configure plan benefits, terms, tax details and secure payment verification before collecting money.</div>
+</section>
+
+<section class="view" id="paymentsView">
+ <div class="page-heading"><div class="eyebrow">Secure checkout</div><h1>Choose how to pay.</h1><p>Select your preferred method. Online payments must be completed through the official Razorpay checkout.</p></div>
+ <div class="payment-grid">
+  <button class="payment-card" data-method="upi"><span class="feature-icon">⌁</span><b>UPI</b><p>Pay using an available UPI app in checkout.</p></button>
+  <button class="payment-card" data-method="qr"><span class="feature-icon">▦</span><b>QR / Scanner</b><p>Use QR if Razorpay enables it for your account and checkout.</p></button>
+  <button class="payment-card" data-method="card"><span class="feature-icon">▣</span><b>Debit / Credit Card</b><p>Pay with an eligible supported card.</p></button>
+  <button class="payment-card" data-method="cash"><span class="feature-icon">₹</span><b>Cash</b><p>Offline payment, confirmed manually by the owner.</p></button>
+ </div>
+ <div class="payment-detail" id="paymentDetail">
+  <h2 id="paymentTitle">Your secure payment</h2>
+  <p id="paymentText">Select a plan and payment method to continue.</p>
+  <div class="notice" id="paymentNotice">Razorpay checkout requires server endpoints <code>/api/payment/create-order</code> and <code>/api/payment/verify</code>. Your Razorpay secret key must stay on the server.</div>
+  <button class="btn-primary" id="startPaymentBtn" disabled>Select a plan first</button>
+ </div>
+</section>
+
+<section class="view" id="settingsView">
+ <div class="page-heading"><div class="eyebrow">Your preferences</div><h1>Make it feel like yours.</h1><p>Adjust the way your workspace looks and responds.</p></div>
+ <div class="settings-card">
+  <div class="setting-row"><div><b>Appearance</b><small>Switch between lavender light and dark themes.</small></div><button class="btn-secondary" id="settingsTheme">Toggle theme</button></div>
+  <div class="setting-row"><div><b>Default response style</b><small>Choose your preferred response length.</small></div><select id="settingsMode"><option value="default">Balanced</option><option value="concise">Concise</option><option value="detailed">Detailed</option></select></div>
+  <div class="setting-row"><div><b>Chat history</b><small>Saved in this browser on this device.</small></div><span class="eyebrow">Local storage</span></div>
+  <div class="setting-row"><div><b>Privacy</b><small>Never enter passwords, OTPs or full payment details into chat.</small></div><span>⌑</span></div>
+ </div>
+</section>
+</main>
+
+<footer class="footer">
+ <div><div class="footer-brand">SANDHU AI BOT</div><div style="margin-top:5px">A thoughtful space to think, learn and create.</div></div>
+ <div class="footer-links"><button data-view="about">About</button><button data-view="plans">Plans</button><button data-view="payments">Payments</button><button data-view="settings">Settings</button><button id="footerTop">Back to top ↑</button></div>
+ <div>© <span id="year"></span> SANDHU AI</div>
+</footer>
+</div>
+<button class="back-top" id="backTop" aria-label="Scroll to top"><svg viewBox="0 0 24 24"><path d="m5 14 7-7 7 7"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const STORAGE_KEY="sandhu_ai_lavender_chats_v2";
+const THEME_KEY="sandhu_ai_lavender_theme_v2";
+const state={chats:[],currentId:null,files:[],busy:false,selectedPlan:null,selectedAmount:0,selectedMethod:null};
+
+function makeId(){return "chat_"+Date.now()+"_"+Math.random().toString(36).slice(2,7)}
+function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2800)}
+function currentChat(){return state.chats.find(c=>c.id===state.currentId)}
+function saveChats(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state.chats))}catch(e){toast("Storage is full. Export a conversation first.")}}
+function createChat(show=true){const chat={id:makeId(),title:"New conversation",messages:[],updatedAt:Date.now()};state.chats.unshift(chat);state.currentId=chat.id;saveChats();renderHistory();renderMessages();showView("chat");if(show)toast("New chat created")}
+function loadChats(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");if(Array.isArray(data))state.chats=data}catch(e){state.chats=[]}if(!state.chats.length)createChat(false);else{state.currentId=state.chats[0].id;renderMessages()}}
+function renderHistory(){/* History is kept locally; use the chat history controls and browser storage. */}
+function renderMessages(){
+ const root=$("messages"),chat=currentChat();root.innerHTML="";
+ if(!chat||!chat.messages.length){root.innerHTML='<div class="empty-chat"><strong>Where shall we begin?</strong>Your next idea starts with a question.</div>';return}
+ chat.messages.forEach((m,index)=>{
+  const row=document.createElement("div");row.className="message "+m.role;
+  const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=m.role==="user"?"You":"SA";
+  const body=document.createElement("div");body.className="message-body";
+  const meta=document.createElement("div");meta.className="msg-meta";meta.textContent=m.role==="user"?"You":"SANDHU AI";
+  const bubble=document.createElement("div");bubble.className="bubble";bubble.textContent=m.text;
+  body.append(meta,bubble);
+  if(m.role==="assistant"&&!m.pending){const actions=document.createElement("div");actions.className="msg-actions";const copy=document.createElement("button");copy.textContent="Copy";copy.onclick=()=>copyText(m.text);actions.append(copy);if(index===chat.messages.length-1){const regen=document.createElement("button");regen.textContent="Regenerate";regen.onclick=regenerateLast;actions.append(regen)}body.append(actions)}
+  row.append(avatar,body);root.append(row)
+ });
+ requestAnimationFrame(()=>root.scrollTop=root.scrollHeight)
+}
+async function copyText(text){try{await navigator.clipboard.writeText(text);toast("Copied")}catch(e){const a=document.createElement("textarea");a.value=text;document.body.append(a);a.select();document.execCommand("copy");a.remove();toast("Copied")}}
+function showView(name){
+ const allowed=["home","chat","discover","about","plans","payments","settings"];if(!allowed.includes(name))return;
+ document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===name+"View"));
+ document.querySelectorAll(".nav [data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===name));
+ $("mainNav").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"});
+ if(name==="chat")setTimeout(()=>$("messageInput").focus(),100)
+}
+document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
+$("menuBtn").onclick=()=>$("mainNav").classList.toggle("open");
+function toggleTheme(){document.body.classList.toggle("dark");localStorage.setItem(THEME_KEY,document.body.classList.contains("dark")?"dark":"light")}
+if(localStorage.getItem(THEME_KEY)==="dark")document.body.classList.add("dark");
+$("themeBtn").onclick=toggleTheme;$("settingsTheme").onclick=toggleTheme;
+$("year").textContent=new Date().getFullYear();
+
+function startPrompt(text){const prompt=text.trim();if(!prompt)return toast("Please enter a question first");if(!currentChat())createChat(false);showView("chat");$("messageInput").value=prompt;sendMessage()}
+$("homeSend").onclick=() => startPrompt($("homeInput").value);
+$("homeInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("homeSend").click()}});
+document.querySelectorAll("[data-prompt]").forEach(b=>b.addEventListener("click",()=>startPrompt(b.dataset.prompt)));
+
+async function sendMessage(){
+ if(state.busy)return;
+ const input=$("messageInput"),text=input.value.trim();if(!text&&!state.files.length)return;
+ if(state.files.length){toast("Files are selected, but this backend currently accepts text only. Upload processing needs a backend upload route.");if(!text)return}
+ if(!currentChat())createChat(false);
+ const chat=currentChat();chat.messages.push({role:"user",text:text||"[Attachment selected]"+state.files.map(f=>"\n"+f.name).join("")});
+ if(chat.title==="New conversation")chat.title=(text||"Attachment").slice(0,36);
+ input.value="";state.busy=true;$("sendBtn").disabled=true;
+ const pending={role:"assistant",text:"",pending:true};chat.messages.push(pending);saveChats();renderMessages();
+ const last=$("messages").querySelector(".message:last-child .bubble");if(last){const dots=document.createElement("span");dots.className="typing";dots.innerHTML="<i></i><i></i><i></i>";last.append(dots)}
+ try{
+  const response=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:text,model:$("modeSelect").value})});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||"Server returned "+response.status);
+  pending.text=data.reply??data.response??data.answer??"The server returned an unexpected response."
+ }catch(error){pending.text="I couldn't connect to the chat service. Check that Flask is running and POST /api/chat is configured. ("+error.message+")"}
+ finally{delete pending.pending;state.busy=false;$("sendBtn").disabled=false;state.files=[];renderFilePreview();$("fileInput").value="";saveChats();renderMessages()}
+}
+$("sendBtn").onclick=sendMessage;
+$("messageInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}});
+$("newChatBtn").onclick=()=>createChat();
+$("refreshBtn").onclick=()=>{renderMessages();toast("Chat refreshed")};
+function clearCurrentChat(){const chat=currentChat();if(!chat)return; if(!confirm("Clear all messages in this conversation?"))return;chat.messages=[];chat.title="New conversation";chat.updatedAt=Date.now();saveChats();renderMessages();toast("Chat cleared")}
+$("clearChatBtn").onclick=clearCurrentChat;
+$("exportBtn").onclick=()=>{const chat=currentChat();if(!chat||!chat.messages.length)return toast("No messages to export");const content=chat.messages.map(m=>(m.role==="user"?"You":"SANDHU AI")+":\n"+m.text).join("\n\n");const blob=new Blob([content],{type:"text/plain"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="sandhu-ai-chat.txt";a.click();URL.revokeObjectURL(url)};
+async function regenerateLast(){const chat=currentChat();if(!chat||state.busy)return;const last=chat.messages[chat.messages.length-1];if(last?.role!=="assistant")return;chat.messages.pop();const user=chat.messages.pop();if(user?.role!=="user")return;const text=user.text;saveChats();renderMessages();$("messageInput").value=text;await sendMessage()}
+
+$("attachBtn").onclick=()=>$("fileInput").click();
+$("fileInput").onchange=e=>{
+ const chosen=Array.from(e.target.files||[]);const max=25*1024*1024;
+ for(const file of chosen){if(file.size>max){toast(file.name+" is larger than 25 MB");continue}state.files.push(file)}
+ renderFilePreview();if(state.files.length)toast(state.files.length+" attachment(s) selected")
+};
+function renderFilePreview(){
+ const root=$("attachPreview");root.innerHTML="";
+ state.files.forEach((file,index)=>{const chip=document.createElement("div");chip.className="file-chip";const name=document.createElement("span");name.textContent=file.name;const remove=document.createElement("button");remove.type="button";remove.textContent="×";remove.title="Remove attachment";remove.onclick=()=>{state.files.splice(index,1);renderFilePreview()};chip.append(name,remove);root.append(chip)})
+}
+$("voiceBtn").onclick=()=>{
+ const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Speech)return toast("Voice input is not supported in this browser");
+ const recognition=new Speech();recognition.lang="en-IN";recognition.onresult=e=>$("messageInput").value+=e.results[0][0].transcript;recognition.onerror=()=>toast("Voice input could not start");recognition.start()
+};
+$("settingsMode").onchange=e=>$("modeSelect").value=e.target.value;
+
+/* Payment UI: this calls the secure backend endpoints; it does not collect card/UPI credentials itself. */
+document.querySelectorAll("[data-plan]").forEach(btn=>btn.addEventListener("click",()=>{
+ const amount=Number(btn.dataset.amount||0);if(!amount){toast("You are on the Free plan");return}
+ state.selectedPlan=btn.dataset.plan;state.selectedAmount=amount;showView("payments");updatePaymentDetail()
+}));
+document.querySelectorAll("[data-method]").forEach(btn=>btn.addEventListener("click",()=>{
+ state.selectedMethod=btn.dataset.method;
+ document.querySelectorAll(".payment-card").forEach(card=>card.classList.toggle("selected",card===btn));
+ updatePaymentDetail()
+}));
+function updatePaymentDetail(){
+ const methods={upi:"UPI",qr:"QR / Scanner",card:"Debit or credit card",cash:"Cash"};
+ $("paymentTitle").textContent=state.selectedPlan?state.selectedPlan+" plan · ₹"+state.selectedAmount:"Choose a plan";
+ $("paymentText").textContent=state.selectedMethod?methods[state.selectedMethod]+" selected. "+(state.selectedMethod==="cash"?"Cash is an offline payment and must be confirmed manually by the site owner.":"You will continue to Razorpay's official checkout. The payment options displayed there depend on your Razorpay merchant configuration."):"Select a payment method above.";
+ const ready=!!state.selectedPlan&&!!state.selectedMethod&&state.selectedMethod!=="cash";
+ $("startPaymentBtn").disabled=!ready;
+ $("startPaymentBtn").textContent=state.selectedMethod==="cash"?"Offline payment — manual confirmation":ready?"Continue to secure checkout":"Select plan and method";
+ $("paymentNotice").textContent=state.selectedMethod==="qr"?"QR / scanner payments appear only if enabled for your Razorpay account and supported checkout. This page cannot create a genuine merchant QR without your Razorpay order and account configuration.":"For real online payments, your Flask backend must create a Razorpay order and verify its signature. Keep the Razorpay key secret on the server."
+}
+$("startPaymentBtn").onclick=beginRazorpayPayment;
+async function beginRazorpayPayment(){
+ if(!state.selectedPlan||!state.selectedAmount||!state.selectedMethod)return toast("Choose a plan and payment method first");
+ if(state.selectedMethod==="cash")return toast("Cash must be collected and confirmed offline by the owner");
+ try{
+  const orderResponse=await fetch("/api/payment/create-order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({plan:state.selectedPlan,amount:state.selectedAmount,method:state.selectedMethod})});
+  const order=await orderResponse.json().catch(()=>({}));
+  if(!orderResponse.ok)throw new Error(order.error||"Payment backend is not configured ("+orderResponse.status+")");
+  if(!order.order_id||!order.key_id||!order.amount)throw new Error("Backend must return order_id, key_id and amount.");
+  if(!window.Razorpay)await new Promise((resolve,reject)=>{const s=document.createElement("script");s.src="https://checkout.razorpay.com/v1/checkout.js";s.onload=resolve;s.onerror=()=>reject(new Error("Could not load Razorpay Checkout"));document.head.append(s)});
+  const options={key:order.key_id,amount:order.amount,currency:order.currency||"INR",name:"SANDHU AI BOT",description:state.selectedPlan+" plan",order_id:order.order_id,method:{upi:state.selectedMethod==="upi",card:state.selectedMethod==="card"},theme:{color:"#8064c9"},handler:async result=>{
+   const verify=await fetch("/api/payment/verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...result,plan:state.selectedPlan})});
+   const verified=await verify.json().catch(()=>({}));
+   if(!verify.ok||!verified.verified)throw new Error("Payment verification failed. Contact the site owner with your payment ID.");
+   toast("Payment verified successfully.")
+  }};
+  const checkout=new Razorpay(options);checkout.on("payment.failed",r=>toast(r.error?.description||"Payment failed. Please try again."));checkout.open()
+ }catch(error){toast(error.message+" Ask the developer to configure the payment backend.")}
+}
+$("backTop").onclick=()=>$("footerTop").click();
+$("footerTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+window.addEventListener("scroll",()=>$("backTop").classList.toggle("show",window.scrollY>350));
+loadChats();updatePaymentDetail();
+</script>
+</body>
+</html>

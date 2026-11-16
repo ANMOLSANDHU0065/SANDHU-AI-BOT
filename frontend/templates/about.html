@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | SANDHU AI BOT</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <main class="about-card">
+    <a href="/">← Back to chat</a>
+    <div class="brand-mark">S</div>
+    <h1>About SANDHU AI BOT</h1>
+    <p>SANDHU AI BOT is a learning project built with Python, Flask, Natural Language Processing, and SQLite.</p>
+    <h2>How it works</h2>
+    <p>The NLP engine converts questions into TF-IDF vectors and compares them with sample questions using cosine similarity. Chat messages are stored in a local SQLite database.</p>
+    <p class="note">This starter version uses an FAQ-based NLP engine. It is not a large generative language model yet.</p>
+  </main>
+</body>
+</html>
